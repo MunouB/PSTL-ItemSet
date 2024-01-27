@@ -23,11 +23,10 @@ struct basket {
 };
 typedef struct basket basket;
 
-struct baskets {
+typedef struct baskets {
 	basket * bsk_list;
 	int size;
-};
-typedef struct baskets baskets;
+}baskets;
 
 typedef struct large_item_set{
 	int support;
@@ -47,8 +46,9 @@ item_set* init_set();
 bool in_set(item,item_set*);
 void add_itemset(item,item_set*);
 void display_itemset(item_set*);
-basket* init_basket();	
+basket* init_basket(int);	
 void add_basket(item,basket*);
 void add_baskets();
 baskets * add_baskets2();
-void display_basket(basket*);
+void display_basket(basket);
+void display_baskets(baskets*);

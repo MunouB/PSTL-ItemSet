@@ -7,9 +7,9 @@ item_set* init_set(){
 	return new_item_set;
 }
 
-basket* init_basket(){
+basket* init_basket(int id){
 	basket * new_basket = malloc(sizeof(basket));
-	new_basket -> basket_id = 0;
+	new_basket -> basket_id = id;
 	new_basket -> size = 0;
 	new_basket -> items = malloc(sizeof(item));
 	return new_basket;
@@ -72,21 +72,19 @@ baskets * add_baskets2(char * f){
 	const char * seperator = ",";
 	fgets(line, sizeof(line), file);
     int a = -1;
-    basket * b = init_basket();
+    basket * b = init_basket(0);
 	while(fgets(line,sizeof(line),file)){
 		char * token = strtok(line, seperator);
 		int basket_number = atoi(token);
 		if(basket_number != a){
-			
 			if(b -> size != 0){
 				add_baskets(b,bs);
-				bs -> size += 1;
 			}
-			basket * b = init_basket();
+			b = init_basket(basket_number);
 		}
 		for(int i = 0 ; i < 2 ; i++){
 			if(i==0){
-				int a = atoi(token);
+				a = atoi(token);
 			}
 			if(i == 1){
 				int item_id = atoi(token);
@@ -97,20 +95,31 @@ baskets * add_baskets2(char * f){
 			token = strtok(NULL,seperator);
 		}
 	}
+	add_baskets(b,bs);
+	// display_baskets(bs);
 	fclose(file);
 	return bs;
 }
 
 
-void display_basket(basket * b){
+void display_basket(basket b){
+	printf("Basket ID : %d\n",b.basket_id);
+	printf("Basket Size : %d\n",b.size);
 	printf("{");
-	for(int i = 0 ; i < b->size ; i++){
-		if(i == b-> size-1){
-			printf(" %d }\n",b->items[i].item_id);
+	for(int i = 0 ; i < b.size ; i++){
+		if(i == b.size-1){
+			printf(" %d }\n\n\n",b.items[i].item_id);
 		}
 		else{
-			printf(" %d ,",b->items[i].item_id);
+			printf(" %d ,",b.items[i].item_id);
 		}
+	}
+}
+
+void display_baskets(baskets * bs){
+	printf("{");
+	for(int i = 0 ; i < bs->size ; i++){
+		display_basket(bs->bsk_list[i]);
 	}
 }
 
@@ -131,12 +140,18 @@ int main(int argc, char const *argv[]) {
 	if(x == NULL){
 		return EXIT_FAILURE;
 	}
+	display_baskets(x);
 
-	for(int i = 0 ; i < x-> size ; i++){
-		basket curr = x -> bsk_list[i];
-		printf("Basket ID : %d ***** Size = %d\n",curr.basket_id,curr.size);
-		// display_basket(curr);
-	}
+
+
+
+	// for(int i = 0 ; i < x-> size ; i++){
+	// 	basket curr = x -> bsk_list[i];
+	// 	printf("Basket ID : %d ***** Size = %d ***** order : %d\n",curr.basket_id,curr.size,i+1);
+	// 	for(int j = 0 ; j < curr.size ; j++){
+	// 		printf("Item ID , %d\n",curr.items[j].item_id);
+	// 	}
+	// }
 
 	/*basket * b = init_basket();
 	int x = add_basket();*/
