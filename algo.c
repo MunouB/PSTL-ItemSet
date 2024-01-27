@@ -77,6 +77,7 @@ baskets * add_baskets2(char * f){
 		char * token = strtok(line, seperator);
 		int basket_number = atoi(token);
 		if(basket_number != a){
+			
 			if(b -> size != 0){
 				add_baskets(b,bs);
 				bs -> size += 1;
