@@ -21,6 +21,14 @@ baskets * init_baskets(){
 	return new_baskets;
 }
 
+large_item_set * init_large_item_set(int support){
+	large_item_set * new_large_item_set = (large_item_set*)malloc(sizeof(large_item_set));
+	new_large_item_set -> support = support;
+	new_large_item_set -> items = *init_set();
+	new_large_item_set -> next = NULL;
+	return new_large_item_set;
+}
+
 bool in_set(item item,item_set * s){
 	for(int i = 0 ; i < s->k ; i++){
 		if(s->items[i].item_id == item.item_id){
@@ -101,6 +109,33 @@ baskets * add_baskets2(char * f){
 	return bs;
 }
 
+large_item_set* add_large_item_set(item_set is,large_item_set * l){
+	large_item_set * new_large_item_set = init_large_item_set(l->support);
+	new_large_item_set ->items = is;
+	if(l==NULL){
+		return new_large_item_set;
+	}
+	else{
+		large_item_set *curr = l;
+		while(curr-> next != NULL){
+			curr = curr -> next;
+		}
+		curr -> next = new_large_item_set;
+	}
+	return l;
+}
+
+void display_itemset(item_set * s){
+	printf("{");
+	for(int i = 0 ; i < s->k ; i++){
+		if(i == s-> k-1){
+			printf(" %d }\n",s->items[i].item_id);
+		}
+		else{
+			printf(" %d , ",s->items[i].item_id);
+		}
+	}
+}
 
 void display_basket(basket b){
 	printf("Basket ID : %d\n",b.basket_id);
@@ -117,30 +152,62 @@ void display_basket(basket b){
 }
 
 void display_baskets(baskets * bs){
-	printf("{");
 	for(int i = 0 ; i < bs->size ; i++){
 		display_basket(bs->bsk_list[i]);
 	}
 }
 
-void display_itemset(item_set * s){
-	printf("{");
-	for(int i = 0 ; i < s->k ; i++){
-		if(i == s-> k-1){
-			printf(" %d }\n",s->items[i].item_id);
-		}
-		else{
-			printf(" %d ,",s->items[i].item_id);
-		}
+void display_large_item_set(large_item_set * l){
+	while(l->next != NULL){
+		l=l->next;
+		display_itemset(&(l->items));
 	}
 }
 
-int main(int argc, char const *argv[]) {
-	baskets * x = add_baskets2("ratings.csv");
-	if(x == NULL){
-		return EXIT_FAILURE;
+large_item_set* apriori_algorithme(char * f,int support){
+	baskets * bs = add_baskets2(f);
+	item_set * is = init_set();
+	for(int i = 0 ; i < bs -> size ; i++){
+		basket b = bs->bsk_list[i];
+		for(int j = 0 ; j < b.size ; j++){
+			add_itemset(b.items[j],is);
+		}
 	}
-	display_baskets(x);
+
+	large_item_set * c1 = init_large_item_set(support);
+	item_set * is_1 = init_set();
+	for(int i = 0 ; i<is-> k ; i++){
+		is_1 = init_set();
+		add_itemset(is -> items[i],is_1);
+		add_large_item_set(*is_1,c1);
+	}
+	
+	large_item_set * l1 = init_large_item_set(support);
+	while(c1->next != NULL){
+		c1 = c1->next;
+		int count = 0;
+		for(int j = 0 ; j < bs->size ; j++){
+			if(in_basket(*(c1->items.items),&(bs->bsk_list[j]))){
+				count++;
+				if(count>=support){
+					l1 = add_large_item_set(c1->items,l1);
+					break;
+				}
+			}
+		}
+	}
+	return l1;
+}
+
+
+int main(int argc, char const *argv[]) {
+	large_item_set* l = apriori_algorithme("ratings.csv",150);
+
+	// baskets * x = add_baskets2("ratings.csv");
+	// if(x == NULL){
+	// 	return EXIT_FAILURE;
+	// }
+	// display_baskets(x);
 
 
 
@@ -155,6 +222,23 @@ int main(int argc, char const *argv[]) {
 
 	/*basket * b = init_basket();
 	int x = add_basket();*/
+
+	// item_set * is = init_set();
+	// for(int i = 1 ; i < 20 ; i+=2){
+	// 	item it;
+	// 	it.item_id = i;
+	// 	add_itemset(it,is);
+	// }
+	// display_itemset(is);
+	// large_item_set * l = init_large_item_set(10);
+	// item_set * is_1 = init_set();
+	// for(int i = 0 ; i<is-> k ; i++){
+	// 	is_1 = init_set();
+	// 	add_itemset(is -> items[i],is_1);
+	// 	add_large_item_set(*is_1,l);
+	// }
+	// add_large_item_set(*is,l);
+	// display_large_item_set(l);
 
 	return 0;
 }
