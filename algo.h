@@ -52,12 +52,16 @@ bool in_basket(item,basket*);
 
 void add_itemset(item,item_set*);
 void add_basket(item,basket*);
-void add_baskets();
-baskets * add_baskets2();
+void add_baskets(basket *,baskets *);
+baskets * generate_baskets(char *);
 large_item_set* add_large_item_set(item_set,large_item_set *);
 
 void display_itemset(item_set*);
 void display_basket(basket);
 void display_baskets(baskets*);
 void display_large_item_set(large_item_set*);
+
+item_set* get_items_from_large_item_set(large_item_set*);
+large_item_set* construct_l1(char*,int);
+large_item_set* apriori_generator(large_item_set *);
 large_item_set* apriori_algorithm(char*,int);

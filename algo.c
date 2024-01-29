@@ -47,6 +47,16 @@ bool in_basket(item item,basket * b){
 	return false;
 }
 
+bool in_large_item_set(item_set it,large_item_set * l){
+	while(l != NULL){
+		if(&(it) == &(l->items)){
+			return true;
+		}
+		 l = l -> next;
+	}
+	return false;
+}
+
 void add_itemset(item item, item_set * s){
 	if(!(in_set(item,s))){
 		s-> items = realloc(s-> items , sizeof(item) * (s->k + 1));
@@ -69,7 +79,7 @@ void add_baskets(basket * b,baskets *bs){
 	bs->size +=1;
 }
 
-baskets * add_baskets2(char * f){
+baskets * generate_baskets(char * f){
 	baskets *bs = init_baskets();
 	FILE * file = fopen(f, "r");
 	if(file == NULL){
@@ -114,13 +124,16 @@ large_item_set* add_large_item_set(item_set is,large_item_set * l){
 	new_large_item_set ->items = is;
 	if(l==NULL){
 		return new_large_item_set;
+		l = l->next;
 	}
 	else{
-		large_item_set *curr = l;
-		while(curr-> next != NULL){
-			curr = curr -> next;
+		if(!in_large_item_set(is,l)){
+			large_item_set *curr = l;
+			while(curr-> next != NULL){
+				curr = curr -> next;
+			}
+			curr -> next = new_large_item_set;
 		}
-		curr -> next = new_large_item_set;
 	}
 	return l;
 }
@@ -164,8 +177,8 @@ void display_large_item_set(large_item_set * l){
 	}
 }
 
-large_item_set* apriori_algorithme(char * f,int support){
-	baskets * bs = add_baskets2(f);
+large_item_set * construct_l1(char * f,int support){
+	baskets * bs = generate_baskets(f);
 	item_set * is = init_set();
 	for(int i = 0 ; i < bs -> size ; i++){
 		basket b = bs->bsk_list[i];
@@ -199,11 +212,75 @@ large_item_set* apriori_algorithme(char * f,int support){
 	return l1;
 }
 
+item_set* get_items_from_large_item_set(large_item_set* l){
+	item_set * s = init_set();
+	while(l != NULL){
+		for(int i = 0 ; i < l->items.k ; i++){
+			add_itemset(l->items.items[i],s);
+		}
+		l = l->next;
+	}
+	return s;
+}
+
+large_item_set* construct_ck(item_set * s,large_item_set* lk_1){
+	large_item_set* l = lk_1;
+	memcpy(l,lk_1,sizeof(large_item_set));
+	int k = l->next->items.k;
+	l = l->next;
+	if(s == NULL){
+		return NULL;
+	}
+	item_set * new = init_set();
+	large_item_set * ck = init_large_item_set(l->support);
+	while(l != NULL){
+		new = &(l->items);
+		// printf("%d\n",new->k);
+		// display_itemset(new);
+
+		for (int i = 0 ; i < s->k ; i++){
+			printf("iteration %d\n",i);
+			printf("Your boolean variable is: %d\n",new->k != l->items.k + 1);
+			// printf("%d\n",l->items.k+1);
+			if(new->k != l->items.k + 1){
+				printf("%d != %d\n",new->k,l->items.k+1);
+				add_itemset(s->items[i],new);
+				// display_itemset(new);
+				// printf("%d\n",new->k);
+			}
+			else{
+				ck = add_large_item_set(*new,ck);
+				new = &(l->items);
+				add_itemset(s->items[i],new);
+				if(i == s->k - 1){	
+					ck = add_large_item_set(*new,ck);
+				} 
+			}
+		}
+		l = l->next;
+	}
+	return ck;
+}
+
+large_item_set* apriori_generator(large_item_set * lk_1){
+	item_set* s = get_items_from_large_item_set(lk_1);
+	large_item_set * ck = construct_ck(s,lk_1);
+}
+
+large_item_set* apriori_algorithme(char * f,int support){
+	large_item_set * l1 = construct_l1(f,support);
+	return l1;
+}
+
 
 int main(int argc, char const *argv[]) {
-	large_item_set* l = apriori_algorithme("ratings.csv",150);
+	large_item_set* l = apriori_algorithme("ratings.csv",250);
+	item_set* s = get_items_from_large_item_set(l);
+	// display_itemset(s);
+	large_item_set *ck = construct_ck(s,l);
 
-	// baskets * x = add_baskets2("ratings.csv");
+
+	// baskets * x = generate_baskets("ratings.csv");
 	// if(x == NULL){
 	// 	return EXIT_FAILURE;
 	// }
@@ -238,7 +315,12 @@ int main(int argc, char const *argv[]) {
 	// 	add_large_item_set(*is_1,l);
 	// }
 	// add_large_item_set(*is,l);
+	printf("\n");
 	// display_large_item_set(l);
+	// while(l -> next != NULL){
+	// 	l = l -> next;
+	// 	printf("%d\n",l->items.k);
+	// }
 
 	return 0;
 }
