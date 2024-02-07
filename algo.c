@@ -47,9 +47,17 @@ bool in_basket(item item,basket * b){
 	return false;
 }
 
-bool in_large_item_set(item_set it,large_item_set * l){
+bool two_item_sets_are_similar(item_set * s1,item_set * s2){
+	if(s1->k != s2->k) return false;
+	for (int i = 0 ; i < s1->k ; i++){
+		if(!in_set(s1->items[i],s2)) return false;
+	}
+	return true;
+}
+
+bool in_large_item_set(item_set *it,large_item_set * l){
 	while(l != NULL){
-		if(&(it) == &(l->items)){
+		if(two_item_sets_are_similar(it,&(l->items))){
 			return true;
 		}
 		 l = l -> next;
@@ -124,10 +132,9 @@ large_item_set* add_large_item_set(item_set is,large_item_set * l){
 	new_large_item_set ->items = is;
 	if(l==NULL){
 		return new_large_item_set;
-		l = l->next;
 	}
 	else{
-		if(!in_large_item_set(is,l)){
+		if(!in_large_item_set(&(is),l)){
 			large_item_set *curr = l;
 			while(curr-> next != NULL){
 				curr = curr -> next;
@@ -177,6 +184,17 @@ void display_large_item_set(large_item_set * l){
 	}
 }
 
+item_set * cpy_item_set(item_set * s){
+	item_set * copy = init_set();
+	for(int i = 0 ; i < s -> k ; i++){
+		int id = s->items[i].item_id;
+		item t;
+		t.item_id = id;
+		add_itemset(t,copy);
+	}
+	return copy;
+}
+
 large_item_set * construct_l1(char * f,int support){
 	baskets * bs = generate_baskets(f);
 	item_set * is = init_set();
@@ -223,48 +241,82 @@ item_set* get_items_from_large_item_set(large_item_set* l){
 	return s;
 }
 
-large_item_set* construct_ck(item_set * s,large_item_set* lk_1){
-	large_item_set* l = lk_1;
-	memcpy(l,lk_1,sizeof(large_item_set));
-	int k = l->next->items.k;
-	l = l->next;
-	if(s == NULL){
-		return NULL;
-	}
-	item_set * new = init_set();
-	large_item_set * ck = init_large_item_set(l->support);
-	while(l != NULL){
-		new = &(l->items);
-		// printf("%d\n",new->k);
-		// display_itemset(new);
+// large_item_set* construct_ck(item_set * s,large_item_set* lk_1){
+// 	large_item_set* l = lk_1;
+// 	memcpy(l,lk_1,sizeof(large_item_set));
+// 	int k = l->items.k;
+// 	if(s == NULL){
+// 		return NULL;
+// 	}
+// 	// display_large_item_set(l);
+// 	item_set * new = init_set();
+// 	large_item_set * ck = init_large_item_set(l->support);
+// 	l=l->next;
+// 	while(l != NULL){
+// 		// display_itemset(new);
+// 		new = cpy_item_set(&(l->items));
+// 		// display_itemset(new);
+// 		// new = &(l->items);
+// 		// printf("%d\n",new->k);
+// 		// display_itemset(new);
 
-		for (int i = 0 ; i < s->k ; i++){
-			printf("iteration %d\n",i);
-			printf("Your boolean variable is: %d\n",new->k != l->items.k + 1);
-			// printf("%d\n",l->items.k+1);
-			if(new->k != l->items.k + 1){
-				printf("%d != %d\n",new->k,l->items.k+1);
-				add_itemset(s->items[i],new);
-				// display_itemset(new);
-				// printf("%d\n",new->k);
-			}
-			else{
+// 		for (int i = 0 ; i < s->k ; i++){
+// 			// printf("iteration %d\n",i);
+// 			printf("Your boolean variable is: %d\n",new->k != l->items.k + 1);
+// 			// printf("%d\n",l->items.k+1);
+// 			if(new->k != l->items.k + 1){
+// 				// printf("%d != %d\n",new->k,l->items.k+1);
+// 				add_itemset(s->items[i],new);
+// 				display_itemset(new);
+// 				// display_itemset(new);
+// 				// printf("%d\n",new->k);
+// 			}
+// 			else{
+// 				// printf("Je suis là\n");
+// 				printf("Here is the new new after something : ");
+// 				display_itemset(new);
+// 				ck = add_large_item_set(*new,ck);
+// 				printf("Here is ck after the last element was added : ");
+// 				display_large_item_set(ck);
+// 				item_set * new = init_set();
+// 				new = cpy_item_set(&(l->items));
+// 				printf("Here is new after it was reinitialized : ");
+// 				display_itemset(new);
+// 				add_itemset(s->items[i],new);
+// 				printf("Here is new after the current element was added : ");
+// 				display_itemset(new);
+// 				if(i == s->k - 1 && l-> next != NULL){	
+// 					ck = add_large_item_set(*new,ck);
+// 				}
+// 			}
+// 		}
+// 		l = l->next;
+// 	}
+// 	return ck;
+// }
+
+large_item_set * construct_ck(large_item_set * lk_1){
+	item_set* s = get_items_from_large_item_set(lk_1);
+	item_set * new = init_set();
+	large_item_set * ck = init_large_item_set(lk_1->support);
+	lk_1=lk_1->next;
+	while(lk_1 != NULL){
+		new = cpy_item_set(&(lk_1->items));
+		for(int i = 0 ; i < s->k ; i++){
+			new = cpy_item_set(&(lk_1->items));
+			add_itemset(s->items[i],new);
+			if(new->k == lk_1->items.k+1){
 				ck = add_large_item_set(*new,ck);
-				new = &(l->items);
-				add_itemset(s->items[i],new);
-				if(i == s->k - 1){	
-					ck = add_large_item_set(*new,ck);
-				} 
 			}
 		}
-		l = l->next;
+		lk_1=lk_1->next;
 	}
-	return ck;
+
 }
 
 large_item_set* apriori_generator(large_item_set * lk_1){
 	item_set* s = get_items_from_large_item_set(lk_1);
-	large_item_set * ck = construct_ck(s,lk_1);
+	large_item_set * ck = construct_ck(lk_1);
 }
 
 large_item_set* apriori_algorithme(char * f,int support){
@@ -275,9 +327,21 @@ large_item_set* apriori_algorithme(char * f,int support){
 
 int main(int argc, char const *argv[]) {
 	large_item_set* l = apriori_algorithme("ratings.csv",250);
-	item_set* s = get_items_from_large_item_set(l);
+	// display_large_item_set(l);
+	// item_set* s = get_items_from_large_item_set(l);
+	// item_set* copy = cpy_item_set(s);
+	// display_itemset(copy);
+	// item il;
+	// il.item_id = 260;
+	// add_itemset(il,copy);
 	// display_itemset(s);
-	large_item_set *ck = construct_ck(s,l);
+	// display_itemset(copy);
+	printf("\n\n\n");
+	// display_itemset(s);
+	large_item_set *ck = construct_ck(l);
+	printf("\n\n\n");
+	display_large_item_set(ck);
+
 
 
 	// baskets * x = generate_baskets("ratings.csv");
@@ -306,6 +370,9 @@ int main(int argc, char const *argv[]) {
 	// 	it.item_id = i;
 	// 	add_itemset(it,is);
 	// }
+	// item il;
+	// il.item_id = 260;
+	// add_itemset(il,is);
 	// display_itemset(is);
 	// large_item_set * l = init_large_item_set(10);
 	// item_set * is_1 = init_set();
@@ -315,6 +382,7 @@ int main(int argc, char const *argv[]) {
 	// 	add_large_item_set(*is_1,l);
 	// }
 	// add_large_item_set(*is,l);
+
 	printf("\n");
 	// display_large_item_set(l);
 	// while(l -> next != NULL){
