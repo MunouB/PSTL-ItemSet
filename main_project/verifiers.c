@@ -43,3 +43,14 @@ bool item_in_hash_table(int item_id,hash_table * table){ //correct
 	add_item_to_item_set(item_id,item_set);
 	return item_set_in_hash_table(item_set,table);
 }
+
+bool all_sub_item_sets_in_hash_table(item_set* set,hash_table* table){
+	for(int i = 0 ; i < set->k ; i++){
+		item_set * sub_set = get_sub_item_set_without_element(set,set->items[i]);
+		if(!(item_set_in_hash_table(sub_set,table))){
+			return false;
+		}
+		free(sub_set);
+	}
+	return true;
+}

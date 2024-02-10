@@ -1,9 +1,44 @@
 #include "main.h"
 
 int main(int argc, char const *argv[]){
-	hash_table * table = construct_l1("ratings.csv",100,2);
-	display_hash_table(table);
-	free_hash_table(table);
+	// hash_table * table = construct_l1("ratings.csv",100,2);
+	// item_set * teste = init_item_set();
+	// item_set * sub1 = init_item_set();
+	// item_set * sub2 = init_item_set();
+	// item_set * sub3 = init_item_set();
+	// display_hash_table(table);
+	// int size = 0;
+	// int * t = get_items_from_hash_table(table,&size);
+	// item_set * item_set = init_item_set();
+	// for(int i = 0 ; i < size ; i++){
+	// 	add_item_to_item_set(t[i],item_set);
+	// }
+	// display_itemset(item_set);
+	// item_set = get_sub_item_set_without_element(item_set,6);
+	// display_itemset(item_set);
+	
+	// add_item_to_item_set(1,teste);
+	// add_item_to_item_set(2,teste);
+	// add_item_to_item_set(6,teste);
+
+	// add_item_to_item_set(1,sub1);
+	// add_item_to_item_set(2,sub1);
+	// add_item_to_item_set(1,sub2);
+	// add_item_to_item_set(6,sub2);
+	// add_item_to_item_set(2,sub3);
+	// add_item_to_item_set(6,sub3);
+
+	// display_itemset(teste);
+	// display_itemset(sub1);
+	// display_itemset(sub2);
+	// display_itemset(sub3);
+	// add_item_set_to_hash_table(sub1,table);
+	// add_item_set_to_hash_table(sub2,table);
+	// add_item_set_to_hash_table(sub3,table);
+	// display_hash_table(table);
+	// bool val = all_sub_item_sets_in_hash_table(teste,table);
+	// printf("%d\n",val);
+	// free_hash_table(table);
 	// int *t = NULL;
 	// int size = 0;
 	// srand(time(NULL));
@@ -49,8 +84,8 @@ int main(int argc, char const *argv[]){
 	// 	printf("%d\n",freq[i]);
 	// }
 
-	// hash_table * table = construct_l1("ratings.csv",100,2);
-	// display_hash_table(table);
+	hash_table * table = construct_l1("try.csv",2,2);
+	display_hash_table(table);
 	// int * t = get_items_from_file("try.csv",2);
 	// item_set * item_set = init_item_set();
 	// display_itemset(item_set);
