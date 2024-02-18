@@ -1,6 +1,8 @@
 #include "main.h"
 
 int main(int argc, char const *argv[]){
+	hash_table * table = runner();
+	display_hash_table(table);
 	// hash_table * table = construct_l1("ratings.csv",100,2);
 	// item_set * teste = init_item_set();
 	// item_set * sub1 = init_item_set();
@@ -16,7 +18,7 @@ int main(int argc, char const *argv[]){
 	// display_itemset(item_set);
 	// item_set = get_sub_item_set_without_element(item_set,6);
 	// display_itemset(item_set);
-	
+
 	// add_item_to_item_set(1,teste);
 	// add_item_to_item_set(2,teste);
 	// add_item_to_item_set(6,teste);
@@ -57,7 +59,7 @@ int main(int argc, char const *argv[]){
 	// int freq[10] = {0,0,0,0,0,0,0,0,0,0};
 	// table = construct_c1(t);
 	// display_hash_table(table);
-	
+
 	// Algorithm to increase the frequencies table values of a single item
 	// int initial_index = -1;
 	// int basket[6] = {12,515,608,643,904,2904};
@@ -84,9 +86,12 @@ int main(int argc, char const *argv[]){
 	// 	printf("%d\n",freq[i]);
 	// }
 
-	int size = 0;
-	hash_table * table = apriori_algorithm("ratings.csv",150,2,1,&size);
-	display_hash_table(table);
+	// int size = 0;
+	// hash_table * table = apriori("ratings.csv",200,2,1,&size,1);
+	// display_hash_table(table);
+	// int size = 0;
+	// baskets * bs = construct_baskets("try.csv",2,1,&size);
+	// display_baskets(bs,size);
 	// free_hash_table(table);
 	// int * t = get_items_from_file("try.csv",2);
 	// item_set * item_set = init_item_set();

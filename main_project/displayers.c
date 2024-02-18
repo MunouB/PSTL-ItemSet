@@ -12,15 +12,29 @@ void display_itemset(item_set * s){ //correct
 }
 
 void display_hash_table(hash_table *table){ //correct
-    for (int i = 0; i < TABLE_SIZE; i++) {
-        printf("Bucket %d: ", i);
-        hash_node *current = table->pointers[i];
-        if (current == NULL) {
-            printf("empty\n");
-        }
-        while (current != NULL) {
-            display_itemset(current->item_set);
-            current = current->next;
-        }
-    }
+	for (int i = 0; i < TABLE_SIZE; i++) {
+		printf("Bucket %d: ", i);
+		hash_node *current = table->pointers[i];
+		if (current == NULL) {
+			printf("empty\n");
+		}
+		while (current != NULL) {
+			display_itemset(current->item_set);
+			current = current->next;
+		}
+	}
+}
+
+void display_baskets(baskets * bs,int size){
+	if(bs == NULL || bs->basket == NULL || bs->count == 0){
+		printf("No baskets found\n");
+		return;
+	}
+	for (int i = 0; i < bs->count; i++) {
+		printf("Basket %d : ", i + 1);
+		for (int j = 0; j < size; j++) {
+			printf("%d ", bs->basket[i][j]);
+		}
+		printf("\n");
+	}
 }

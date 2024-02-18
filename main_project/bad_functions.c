@@ -1,5 +1,22 @@
 #include "main.h"
 
+hash_table * add_hash_table_to_hash_table(hash_table * h1, hash_table * h2){
+	if(h1 == NULL || h2 == NULL){
+		return NULL;
+	}
+	for(int i = 0 ; i < TABLE_SIZE ; i++){
+		hash_node * current = h2->pointers[i];
+		while(current != NULL){
+			if(!item_set_in_hash_table(current->item_set,h1)){
+				item_set * copy = cpy_item_set(current->item_set);
+				add_item_set_to_hash_table(copy,h1);
+			}
+			current = current->next;
+		}
+	}
+	return h1;
+}
+
 // hash_table * construct_l1(char* f, int support,int id_column){
 // 	int * table = get_items_from_file(f,id_column);
 // 	hash_table * t = init_hash_table();

@@ -25,8 +25,6 @@ int * get_items_from_file(char * f,int id_column,int* size){ //correct
 	return table;
 }
 
-
-
 int * get_items_from_hash_table(hash_table * table, int* size){ //correct
 	int * t = NULL;
 	for(int j = 0 ; j < TABLE_SIZE ; j++){

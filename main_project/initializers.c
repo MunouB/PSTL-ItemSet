@@ -36,3 +36,12 @@ hash_table* init_hash_table(){ //correct
 	}
 	return table;
 }
+
+baskets * init_baskets(){
+	baskets * new_baskets = (baskets*)malloc(sizeof(baskets));
+	if(new_baskets != NULL){
+		new_baskets->basket = NULL;
+		new_baskets->count = 0;
+	}
+	return new_baskets;
+}

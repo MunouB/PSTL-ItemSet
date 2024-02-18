@@ -11,24 +11,31 @@
 #define MAX_ITEMS 10000
 
 typedef struct item_set {
-    int k;
-    int *items;
-    int count;
+	int k;
+	int *items;
+	int count;
 }item_set;
 
 typedef struct hash_node{
-    item_set* item_set;
-    int index;
-    struct hash_node * next;
+	item_set* item_set;
+	int index;
+	struct hash_node * next;
 }hash_node;
 
 typedef struct hash_table{
-    hash_node** pointers;
+	hash_node** pointers;
 }hash_table;
+
+// To store the baskets instead of reading the file multiple times, we need a 2D integer array structure
+typedef struct {
+	int **basket;
+	int count; //Number of baskets
+}baskets;
 
 item_set* init_item_set();
 hash_node * init_node();
 hash_table* init_hash_table();
+baskets * init_baskets();
 
 unsigned int hash_item_set(item_set*);
 unsigned int hash_item_id(int);
@@ -43,12 +50,14 @@ bool all_items_of_set_in_bitmap(item_set*,int*,hash_table*);
 
 void display_itemset(item_set*);
 void display_hash_table(hash_table*);
+void display_baskets(baskets*,int);
 
 void add_item_to_item_set(int,item_set*);
 void add_item_set_to_hash_table(item_set*, hash_table*);
 void add_item_to_hash_table(int,hash_table*,int);
 int * add_id_to_integer_table(int,int*,int*);
 hash_table * add_hash_table_to_hash_table(hash_table*, hash_table*);
+void add_bit_map_to_baskets(int*, baskets*, int);
 
 void free_hash_table(hash_table*);
 
@@ -59,6 +68,12 @@ item_set * cpy_item_set(item_set*);
 
 hash_table * construct_c1(int*, int);
 hash_table * construct_l1(char*,int,int,int*);
-hash_table * apriori_algorithm(char*,int,int,int,int*);
+hash_table * construct_ck(hash_table*);
+baskets * construct_baskets(char*,int,int, int*);
+
+hash_table * apriori(char*,int,int,int,int*,int);
+hash_table * apriori_algorithm_1(char*,int,int,int,int*);
+hash_table * apriori_algorithm_2(char*,int,int,int,int*);
+hash_table * runner();
 
 #endif

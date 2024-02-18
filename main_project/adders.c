@@ -59,19 +59,19 @@ int * add_id_to_integer_table(int id,int * table, int* size){ //correct
 	return table;
 }
 
-hash_table * add_hash_table_to_hash_table(hash_table * h1, hash_table * h2){
-	if(h1 == NULL || h2 == NULL){
-		return NULL;
+void add_bit_map_to_baskets(int * bitmap, baskets * bs, int size){
+	bs->basket = realloc(bs->basket,sizeof(int*) * (bs->count + 1));
+	if(bs->basket == NULL){
+		perror("Error");
+		exit(EXIT_FAILURE);
 	}
-	for(int i = 0 ; i < TABLE_SIZE ; i++){
-		hash_node * current = h2->pointers[i];
-		while(current != NULL){
-			if(!item_set_in_hash_table(current->item_set,h1)){
-				item_set * copy = cpy_item_set(current->item_set);
-				add_item_set_to_hash_table(copy,h1);
-			}
-			current = current->next;
-		}
+	bs->basket[bs->count] = malloc(size * sizeof(int));
+	if (bs->basket[bs->count] == NULL) {
+		perror("Error");
+		exit(EXIT_FAILURE);
 	}
-	return h1;
+	for (int i = 0; i < size; i++) {
+		bs->basket[bs->count][i] = bitmap[i];
+	}
+	bs->count++;
 }

@@ -28,8 +28,6 @@ hash_table * construct_l1(char * f,int support,int id_column,int * size){
 	const char * seperator = ",";
 	// Ignore the first line
 	fgets(line, sizeof(line), file);
-	// int a = -1;
-	// int max = (item_id_column > basket_id_column) ? item_id_column : basket_id_column;
 	while(fgets(line,sizeof(line),file)){
 		char * token = strtok(line,seperator);
 		for(int i = 0 ; i < id_column ; i++){
@@ -50,15 +48,7 @@ hash_table * construct_l1(char * f,int support,int id_column,int * size){
 				free(item_set);
 			}
 			token = strtok(NULL,seperator);
-			// if(i == basket_id_column - 1){
-			// 	a = atoi(token);
-			// }
 		}
-		// if(basket_number != a && *size != 0){
-		// 	for (int j = 0 ; j < *size ; ++j){
-		// 		/* code */
-		// 	}
-		// }
 	}
 	fclose(file);
 	hash_table * l1 = init_hash_table();
@@ -94,105 +84,60 @@ hash_table * construct_ck(hash_table * lk_1){
 	return ck;
 }
 
-hash_table * apriori_algorithm(char * f,int support,int item_id_column,int basket_id_column,int *size){
-	hash_table * res = construct_l1(f,support,item_id_column,size);
-	*size = 0;
-	hash_table * lk_1 = construct_l1(f,support,item_id_column,size);
-	bool end = true;
-	while(end){
-		end = false;
-		hash_table * ck = construct_ck(lk_1);
-		free_hash_table(lk_1);
-		lk_1 = init_hash_table();
-		*size = 0;
-		int * t = get_items_from_file(f,item_id_column,size);
-		hash_table * indexes = construct_c1(t,*size);
-		FILE * file = fopen(f, "r");
-		if(file == NULL){
-			perror("Error");
-			// return EXIT_FAILURE;
-		}
-		char line[50];
-		const char * seperator = ",";
-		// Ignore the first line
-		fgets(line, sizeof(line), file);
-		int a = -1;
-		int max = (item_id_column > basket_id_column) ? item_id_column : basket_id_column;
-		int * bitmap = (int*)calloc(*size,sizeof(int));
-		while(fgets(line, sizeof(line), file)){
-			// int len = strlen(line);
-			// if (len > 0 && line[len - 1] == '\n') {
-			// 	line[len - 1] = '\0';
-			// }
-			char * token = strtok(line,seperator);
-			for(int i = 0 ; i < max ; i++){
-				if(i == item_id_column - 1){
-					int item_id = atoi(token);
-					unsigned int index = hash_item_id(item_id);
-					item_set * item_set = init_item_set();
-					add_item_to_item_set(item_id,item_set);
-					hash_node * curr = indexes->pointers[index];
-					while(curr != NULL){
-						if(two_item_sets_are_similar(item_set,curr->item_set)){
-							int initial_index = curr -> index;
-							bitmap[initial_index] = 1;
-							break;
-						}
-						curr = curr -> next;
+baskets * construct_baskets(char * f,int item_id_column, int basket_id_column, int *size){
+	baskets * bs = init_baskets();
+	int * t = get_items_from_file(f,item_id_column,size);
+	hash_table * indexes = construct_c1(t,*size);
+	FILE * file = fopen(f, "r");
+	if(file == NULL){
+		perror("Error");
+		// return EXIT_FAILURE;
+	}
+	char line[50];
+	const char * seperator = ",";
+	fgets(line, sizeof(line), file);
+	int a = -1;
+	int max = (item_id_column > basket_id_column) ? item_id_column : basket_id_column;
+	int * bitmap = (int*)calloc(*size,sizeof(int));
+	while(fgets(line,sizeof(line),file)){
+		char * token = strtok(line, seperator);
+		for(int i = 0 ; i < max ; i++){
+			if(i == basket_id_column - 1){
+				int basket_number = atoi(token);
+				if(basket_number != a){
+					if(a == -1){
+						a = atoi(token);
+					}
+					else{
+						add_bit_map_to_baskets(bitmap,bs,*size);
+						memset(bitmap,0,(*size)*sizeof(bitmap[0]));
+						a = atoi(token);
 					}
 				}
-				if(i == basket_id_column - 1){
-					int basket_number = atoi(token);
-					if(basket_number != a){
-						if(a == -1){
-							a = atoi(token);
-						}
-						else{
-							for(int j = 0 ; j < TABLE_SIZE ; j++){
-								hash_node * current = ck->pointers[j];
-								while(current != NULL){
-									if(all_items_of_set_in_bitmap(current->item_set,bitmap,indexes)){
-										current->item_set->count++;
-									}
-									current = current->next;
-								}
-							}
-							memset(bitmap,0,(*size)*sizeof(bitmap[0]));
-							a = atoi(token);
-						}
+			}
+			if(i == item_id_column - 1){
+				int item_id = atoi(token);
+				unsigned int index = hash_item_id(item_id);
+				item_set * item_set = init_item_set();
+				add_item_to_item_set(item_id,item_set);
+				hash_node * curr = indexes->pointers[index];
+				while(curr != NULL){
+					if(two_item_sets_are_similar(item_set,curr->item_set)){
+						int initial_index = curr -> index;
+						bitmap[initial_index] = 1;
+						break;
 					}
+					curr = curr -> next;
 				}
-				token = strtok(NULL,seperator);
 			}
-		}
-		for(int j = 0 ; j < TABLE_SIZE ; j++){
-			hash_node * current = ck->pointers[j];
-			while(current != NULL){
-				if(all_items_of_set_in_bitmap(current->item_set,bitmap,indexes)){
-					current->item_set->count++;
-				}
-				current = current->next;
-			}
-		}
-		memset(bitmap,0,(*size)*sizeof(bitmap[0]));
-		fclose(file);
-		for(int j = 0 ; j < TABLE_SIZE ; j++){
-			hash_node * current = ck->pointers[j];
-			while(current != NULL){
-				if(current->item_set->count >= support){
-					item_set * lk_item_set = cpy_item_set(current->item_set);
-					item_set * res_item_set = cpy_item_set(current->item_set);
-					add_item_set_to_hash_table(lk_item_set,lk_1);
-					add_item_set_to_hash_table(res_item_set,res);
-					end = true;
-				}
-				current = current->next;
-			}
+			token = strtok(NULL,seperator);
 		}
 	}
-	return res;
+	add_bit_map_to_baskets(bitmap,bs,*size);
+	memset(bitmap,0,(*size)*sizeof(bitmap[0]));
+	fclose(file);
+	return bs;
 }
-
 
 // hash_table * apriori_algorithm(char * f,int support,int item_id_column,int basket_id_column,int *size){
 // 	int n = 4;
@@ -202,7 +147,7 @@ hash_table * apriori_algorithm(char * f,int support,int item_id_column,int baske
 // 		*size = 0;
 // 		hash_table * lk = construct_l1(f,support,item_id_column,size);
 // 		int * possible_items = get_items_from_hash_table(l1,&possible_items_size);
-// 		hash_table * ck = init_hash_table();		
+// 		hash_table * ck = init_hash_table();
 // 		for(int i = 0 ; i < TABLE_SIZE ; i++){
 // 			hash_node * current = l1->pointers[i];
 // 			while(current != NULL){
@@ -247,7 +192,7 @@ hash_table * apriori_algorithm(char * f,int support,int item_id_column,int baske
 // 						if(two_item_sets_are_similar(item_set,curr->item_set)){
 // 							int initial_index = curr -> index;
 // 							bitmap[initial_index] = 1;
-							
+
 // 							printf("\n\n");
 // 							break;
 // 						}
