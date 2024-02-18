@@ -39,6 +39,7 @@ bool two_item_sets_are_similar(item_set*,item_set*);
 bool item_set_in_hash_table(item_set*, hash_table*);
 bool item_in_hash_table(int,hash_table*);
 bool all_sub_item_sets_in_hash_table(item_set*,hash_table*);
+bool all_items_of_set_in_bitmap(item_set*,int*,hash_table*);
 
 void display_itemset(item_set*);
 void display_hash_table(hash_table*);
@@ -47,15 +48,17 @@ void add_item_to_item_set(int,item_set*);
 void add_item_set_to_hash_table(item_set*, hash_table*);
 void add_item_to_hash_table(int,hash_table*,int);
 int * add_id_to_integer_table(int,int*,int*);
+hash_table * add_hash_table_to_hash_table(hash_table*, hash_table*);
 
 void free_hash_table(hash_table*);
 
 int * get_items_from_file(char* f,int,int*);
 int * get_items_from_hash_table(hash_table*, int*);
 item_set * get_sub_item_set_without_element(item_set*, int);
+item_set * cpy_item_set(item_set*);
 
 hash_table * construct_c1(int*, int);
-hash_table * construct_l1(char*,int,int);
-// hash_table * apriori_algorithm(char*,int,int);
+hash_table * construct_l1(char*,int,int,int*);
+hash_table * apriori_algorithm(char*,int,int,int,int*);
 
 #endif

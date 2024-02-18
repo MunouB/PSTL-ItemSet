@@ -84,8 +84,10 @@ int main(int argc, char const *argv[]){
 	// 	printf("%d\n",freq[i]);
 	// }
 
-	hash_table * table = construct_l1("try.csv",2,2);
+	int size = 0;
+	hash_table * table = apriori_algorithm("ratings.csv",150,2,1,&size);
 	display_hash_table(table);
+	// free_hash_table(table);
 	// int * t = get_items_from_file("try.csv",2);
 	// item_set * item_set = init_item_set();
 	// display_itemset(item_set);

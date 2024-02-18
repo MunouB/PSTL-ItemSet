@@ -54,3 +54,22 @@ bool all_sub_item_sets_in_hash_table(item_set* set,hash_table* table){
 	}
 	return true;
 }
+
+bool all_items_of_set_in_bitmap(item_set * set,int * bitmap, hash_table * indexes){
+	for(int i = 0 ; i < set->k ; i++){
+		item_set * test = init_item_set();
+		add_item_to_item_set(set->items[i],test);
+		unsigned int index_check = hash_item_set(test);
+		hash_node * current = indexes->pointers[index_check];
+		while(current != NULL){
+			if(two_item_sets_are_similar(test,current->item_set)){
+				int initial_index = current->index;
+				if(bitmap[initial_index] == 0){
+					return false;
+				}
+			}
+			current = current->next;
+		}
+	}
+	return true;
+}

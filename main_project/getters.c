@@ -50,3 +50,11 @@ item_set * get_sub_item_set_without_element(item_set * set, int element){
 	}
 	return sub_set;
 }
+
+item_set * cpy_item_set(item_set * set){
+	item_set * res = init_item_set();
+	for(int i = 0 ; i < set->k ; i++){
+		add_item_to_item_set(set->items[i],res);
+	}
+	return res;
+}
