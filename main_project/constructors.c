@@ -11,6 +11,53 @@ hash_table * construct_c1(int * t, int size){
 	return NULL;
 }
 
+candidates *construct_c1_tid(char *f, int item_id_column, int basket_id_column, int *size) {
+    int *t = get_items_from_file(f, item_id_column, size);
+    candidates *database = (candidates*)malloc((*size) * sizeof(candidates));
+    
+    FILE *file = fopen(f, "r");
+    if (file == NULL) {
+        perror("Error");
+        return NULL;
+    }
+
+    char line[50];
+    const char *seperator = ",";
+    
+    fgets(line, sizeof(line), file);
+
+    int currentIndex = 0;
+
+    while (fgets(line, sizeof(line), file)) {
+        char *token = strtok(line, seperator);
+        int basket_number = -1;
+
+        while (token != NULL) {
+            if (basket_id_column > 0) {
+                if (basket_id_column == 1) {
+                    basket_number = atoi(token);
+                } 
+            }
+
+            if (item_id_column > 0) {
+                if (item_id_column == 1) {
+                    int item_id = atoi(token);
+                    database[currentIndex].t_id = basket_number;
+                    database[currentIndex].itemsets = (item_set*)malloc(sizeof(item_set));
+                    initialize_item_set(database[currentIndex].itemsets);
+                    add_item_to_item_set(item_id, database[currentIndex].itemsets);
+                    currentIndex++;
+                }
+            }
+
+            token = strtok(NULL, seperator);
+        }
+    }
+
+    fclose(file);
+    return database;
+}
+
 hash_table * construct_l1(char * f,int support,int id_column,int * size){
 	int * t = get_items_from_file(f,id_column,size);
 	hash_table * table = construct_c1(t,*size);
@@ -93,6 +140,8 @@ hash_table * construct_ck(hash_table * lk_1){
 	}
 	return ck;
 }
+
+
 
 hash_table * apriori_algorithm(char * f,int support,int item_id_column,int basket_id_column,int *size){
 	hash_table * res = construct_l1(f,support,item_id_column,size);
@@ -191,6 +240,52 @@ hash_table * apriori_algorithm(char * f,int support,int item_id_column,int baske
 		}
 	}
 	return res;
+}
+
+hash_table *initialize_Ek() {
+    return init_hash_table();
+}
+
+// ----------------- AprioriTid algorithm
+hash_table *apriori_tid_algorithm(char *f, int support, int item_id_column, int basket_id_column, int *size) {
+    hash_table *res = construct_l1(f, support, item_id_column, size);
+    *size = 0;
+    hash_table *lk_1 = construct_l1(f, support, item_id_column, size);
+    bool end = true;
+
+	while (end) {
+    end = false;
+
+    // Construct candidates for the next level (ck)
+    hash_table *ck = construct_ck_tid(lk_1, f, item_id_column, basket_id_column, size); // didnt define construct_ck_tid  yet
+
+    
+    free_hash_table(lk_1);
+    lk_1 = init_hash_table();
+    *size = 0;
+
+    
+
+    for (int j = 0; j < TABLE_SIZE; j++) {
+        hash_node *current = ck->pointers[j];
+        while (current != NULL) {
+            if (current->item_set->count >= support) {
+                item_set *lk_item_set = cpy_item_set(current->item_set);
+                item_set *res_item_set = cpy_item_set(current->item_set);
+                add_item_set_to_hash_table(lk_item_set, lk_1);
+                add_item_set_to_hash_table(res_item_set, res);
+                
+                end = true;
+            }
+            current = current->next;
+        }
+    }
+
+    
+    free_hash_table(ck);
+}	
+
+    return res;
 }
 
 

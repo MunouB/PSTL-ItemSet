@@ -22,6 +22,12 @@ typedef struct hash_node{
     struct hash_node * next;
 }hash_node;
 
+typedef struct candidates {
+    int t_id;
+    item_set *itemsets; 
+} candidates;
+
+
 typedef struct hash_table{
     hash_node** pointers;
 }hash_table;

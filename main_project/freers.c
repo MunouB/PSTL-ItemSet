@@ -14,3 +14,10 @@ void free_hash_table(hash_table * table){
 	free(table->pointers);
 	free(table);
 }
+
+void free_candidates(candidates *database, int size) {
+    for (int i = 0; i < size; ++i) {
+        free_item_set(database[i].itemsets);
+    }
+    free(database);
+}
