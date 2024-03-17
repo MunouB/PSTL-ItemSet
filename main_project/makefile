@@ -14,7 +14,7 @@ LFLAGS =
 LIBS =
 
 # Define the source files
-SRCS = main.c bad_functions.c constructors.c getters.c freers.c adders.c displayers.c verifiers.c hashers.c initializers.c algorithms.c
+SRCS = main.c bad_functions.c constructors.c getters.c freers.c adders.c displayers.c verifiers.c hashers.c initializers.c algorithms.c generators.c
 
 # Define the object files
 OBJS = $(SRCS:.c=.o)

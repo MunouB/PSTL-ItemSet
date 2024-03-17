@@ -1,8 +1,20 @@
 #include "main.h"
 
 int main(int argc, char const *argv[]){
-	hash_table * table = runner();
-	display_hash_table(table);
+	// hash_table * table = runner();
+	// display_hash_table(table);
+	int size = 0;
+	double x = get_execution_time("ratings.csv",100,2,1,&size);
+	printf("%lf\n",x);
+	// srand(time(NULL));
+	// baskets * bs = generate_baskets_randomly(10,100,0.5);
+	// display_baskets(bs,100);
+	// generate_csv(10,100,0.2);
+	// int x;
+	// for(int i = 0 ; i < 10 ; i++){
+	// 	x = generate_0_or_1(0.2);
+	// 	printf("%d\n",x);
+	// }
 	// hash_table * table = construct_l1("ratings.csv",100,2);
 	// item_set * teste = init_item_set();
 	// item_set * sub1 = init_item_set();

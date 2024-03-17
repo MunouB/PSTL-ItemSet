@@ -97,8 +97,8 @@ baskets * generate_baskets(char * f){
 	char line[50];
 	const char * seperator = ",";
 	fgets(line, sizeof(line), file);
-    int a = -1;
-    basket * b = init_basket(0);
+    	int a = -1;
+    	basket * b = init_basket(0);
 	while(fgets(line,sizeof(line),file)){
 		char * token = strtok(line, seperator);
 		int basket_number = atoi(token);
