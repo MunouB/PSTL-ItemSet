@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 
 #define TABLE_SIZE 100
 #define MAX_ITEMS 10000
@@ -81,5 +82,8 @@ double random_ratio();
 int generate_0_or_1(double);
 baskets * generate_baskets_randomly(int,int,double);
 void generate_csv(int,int,double);
+
+
+void run_experiment();
 
 #endif
