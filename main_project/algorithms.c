@@ -1,6 +1,6 @@
 #include "main.h"
 
-hash_table * runner(){
+void runner(){
 	int size = 0;
 	char filename[50];
 	printf("Enter the file's name : ");
@@ -23,7 +23,7 @@ hash_table * runner(){
 		scanf("%d",&choice);
 		printf("\n");
 	}while(choice != 1 && choice != 2);
-	return apriori(filename,support,item_id_column,basket_id_column,&size,choice);
+	hash_table * t = apriori(filename,support,item_id_column,basket_id_column,&size,choice);
 }
 
 hash_table * apriori(char * f,int support,int item_id_column,int basket_id_column,int *size,int choice){

@@ -57,10 +57,10 @@ item_set * cpy_item_set(item_set * set){
 	return res;
 }
 
-double get_execution_time(char * f,int support,int item_id_column,int basket_id_column,int *size){
+double get_execution_time(char * f,int support,int item_id_column,int basket_id_column,int *size, int choice){
 	clock_t begin = clock();
 
-	hash_table * t = apriori_algorithm_1(f,support,item_id_column,basket_id_column,size);
+	hash_table * t = apriori(f,support,item_id_column,basket_id_column,size,choice);
 
 	clock_t end = clock();
 	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;

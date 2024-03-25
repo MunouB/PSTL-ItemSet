@@ -65,7 +65,7 @@ int * get_items_from_file(char* f,int,int*);
 int * get_items_from_hash_table(hash_table*, int*);
 item_set * get_sub_item_set_without_element(item_set*, int);
 item_set * cpy_item_set(item_set*);
-double get_execution_time(char*,int,int,int,int*);
+double get_execution_time(char*,int,int,int,int*,int);
 
 hash_table * construct_c1(int*, int);
 hash_table * construct_l1(char*,int,int,int*);
@@ -75,7 +75,7 @@ baskets * construct_baskets(char*,int,int, int*);
 hash_table * apriori(char*,int,int,int,int*,int);
 hash_table * apriori_algorithm_1(char*,int,int,int,int*);
 hash_table * apriori_algorithm_2(char*,int,int,int,int*);
-hash_table * runner();
+void runner();
 
 double random_ratio();
 int generate_0_or_1(double);
