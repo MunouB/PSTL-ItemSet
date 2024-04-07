@@ -3,10 +3,19 @@
 int main(int argc, char const *argv[]){
 	// hash_table * table = runner();
 	// display_hash_table(table);
+<<<<<<< HEAD
 	// int size = 0;
 	// double x = get_execution_time("ratings.csv",100,2,1,&size,1);
 	// printf("%lf\n",x);
 	srand(time(NULL));
+=======
+	
+	run_experiment();	
+
+	//double x = get_execution_time("ratings.csv",100,2,1,&size);
+	//printf("%lf\n",x);
+	// 
+>>>>>>> d59294bb38c0a076fbf0dc559f99abbc6f0910e0
 	// baskets * bs = generate_baskets_randomly(10,100,0.5);
 	// display_baskets(bs,100);
 	generate_csv(10,100,0.2);

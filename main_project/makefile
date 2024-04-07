@@ -1,6 +1,8 @@
 # Define the compiler to use
 CC = gcc
 
+DB = gdb
+
 # Define any compile-time flags
 CFLAGS = -Wall -g
 
