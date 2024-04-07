@@ -1,28 +1,4 @@
-# Projet STL : Extraction de Motifs Graduels Fermés Fréquents sous Contrainte de Temporalité
 
-## Description 
-Le projet "STL" vise à développer des algorithmes en langage C permettant d'extraire efficacement des motifs graduels fermés fréquents à partir de données commerciales. Ces motifs sont cruciaux pour améliorer divers aspects tels que la gestion des stocks, l'agencement des produits en rayon et les recommandations en ligne.
-
-## Installation 
-Pour installer le projet, suivez ces étapes :
-$ cd main_project/
-$ make
-$ ./main
-
-
-## Exécution
-Au lancement du programme, vous serez invité à choisir parmi les options suivantes :
-
-- 1 pour exécuter l'algorithme Apriori
-- 2 pour exécuter les tests
-
-### Algorithme Apriori 
-Lors de l'exécution de l'algorithme Apriori, suivez ces étapes :
-
-Here's how you can include the code snippet in your README file:
-
-markdown
-Copy code
 # Projet STL : Extraction de Motifs Graduels Fermés Fréquents sous Contrainte de Temporalité
 
 ## Description 
