@@ -7,12 +7,9 @@ Le projet "STL" vise à développer des algorithmes en langage C permettant d'ex
 ## Installation 
 Pour installer le projet, suivez ces étapes :
 
-$ cd main_project/
-$ make
-$ ./main
-
-markdown
-Copy code
+ cd main_project/
+ make
+ ./main
 
 ## Exécution
 Au lancement du programme, vous serez invité à choisir parmi les options suivantes :
