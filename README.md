@@ -1,8 +1,13 @@
 
-# Projet STL : Extraction de Motifs Graduels Fermés Fréquents sous Contrainte de Temporalité
+# Projet STL (2023-2024) : Extraction de Motifs Graduels Fermés Fréquents sous Contrainte de Temporalité 
 
 ## Description 
 Le projet "STL" vise à développer des algorithmes en langage C permettant d'extraire efficacement des motifs graduels fermés fréquents à partir de données commerciales. Ces motifs sont cruciaux pour améliorer divers aspects tels que la gestion des stocks, l'agencement des produits en rayon et les recommandations en ligne.
+
+## Contributeurs 
+- Muhannad Alabdullah
+- Lea El Abboud
+- Esma Hocini
 
 ## Installation 
 Pour installer le projet, suivez ces étapes :
