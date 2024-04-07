@@ -6,10 +6,11 @@ Le projet "STL" vise à développer des algorithmes en langage C permettant d'ex
 
 ## Installation 
 Pour installer le projet, suivez ces étapes :
-
+```
  cd main_project/
  make
  ./main
+```
 
 ## Exécution
 Au lancement du programme, vous serez invité à choisir parmi les options suivantes :
@@ -19,12 +20,13 @@ Au lancement du programme, vous serez invité à choisir parmi les options suiva
 
 ### Algorithme Apriori 
 Lors de l'exécution de l'algorithme Apriori, suivez ces étapes :
-
+```
 $- Entrez le nom du fichier : (choisissez le nom du fichier .csv à exécuter)
 $- Entrez votre support : (choisissez le support)
 $- Entrez le numéro de la colonne contenant les identifiants des articles : (indiquez à l'algorithme la colonne correspondant aux articles dans le fichier csv)
 $- Entrez le numéro de la colonne contenant les identifiants des paniers : (indiquez à l'algorithme la colonne correspondant aux transactions dans le fichier csv)
 $- Choisissez l'une des méthodes suivantes : (sélectionnez une méthode d'exécution de l'algorithme, soit 1 pour la méthode standard avec lecture du fichier à chaque passage, soit 2 où l'algorithme lit le fichier une seule fois (cette méthode a été ajoutée pour des raisons expérimentales))
+```
 ### Tests
 Les tests généreront des courbes expérimentales sur des données artificielles préalablement générées. Ils fourniront les résultats en termes de temps de calcul et de mémoire, en faisant varier les paramètres pertinents tels que :
 
