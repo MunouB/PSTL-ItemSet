@@ -58,70 +58,73 @@ item_set * cpy_item_set(item_set * set){
 }
 
 double get_execution_time(char *f, int support, int item_id_column, int basket_id_column, int *size) {
-    clock_t begin = clock();
-    hash_table *t = NULL;
+	clock_t begin = clock();
+	hash_table *t = NULL;
 
-    // Attempt to execute
-    if ((t = apriori_algorithm_1(f, support, item_id_column, basket_id_column, size)) == NULL) {
-        fprintf(stderr, " Failed to execute apriori\n");
-        return -1.0;
-    }
+	// Attempt to execute
+	if ((t = apriori_algorithm_1(f, support, item_id_column, basket_id_column, size)) == NULL) {
+		fprintf(stderr, " Failed to execute apriori\n");
+		return -1.0;
+	}
 
-    // Measure time spent
-    clock_t end = clock();
-    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	// Measure time spent
+	clock_t end = clock();
+	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
 
-    // Free memory allocated for t
-    free_hash_table(t);
+	// Free memory allocated for t
+	free_hash_table(t);
 
-    return time_spent;
+	return time_spent;
 }
 
 
 
 void run_experiment() {
-srand(time(NULL));
-    // les params fixes
-    int nb_basket = 20;
-    int nb_items = 10;
-    double support = 5;
-    int param1 = 1; // colonne id
-    int param2 = 2; // colonne items
-    int items = 0;
+	srand(time(NULL));
+	// les params fixes
+	int nb_basket = 50;
+	int nb_items = 200;
+	double support = 80;
+	int param1 = 1; // colonne id
+	int param2 = 2; // colonne items
+
+	printf("Je pense pas\n");
 
 
-    FILE *dataFile = fopen("execution_times.dat", "w");
-    if (dataFile == NULL) {
-        fprintf(stderr, "Error opening file.\n");
-        exit(1);
-    }
+	FILE *dataFile = fopen("execution_times.dat", "w");
+	if (dataFile == NULL) {
+		fprintf(stderr, "Error opening file.\n");
+		exit(1);
+	}
+	printf("Je suis l)à\n");
 
-    for (double probability = 0.1; probability <= 0.9; probability += 0.1) {
-    generate_csv(nb_basket, nb_items, probability);
+	for (double probability = 0.1; probability <= 0.9; probability += 0.1) {
+		int items = 0;
+		generate_csv(nb_basket, nb_items, probability);
+		// Check if CSV file was successfully generated
+		if (access("DataRand.csv", F_OK) != -1) {
+			// File exists
+			double exec_time = get_execution_time("DataRand.csv", support, param1, param2, &items);
+			printf("EX time is done and now it's a new life : %f\n",exec_time);
+			fprintf(dataFile, "%.2f %f\n", probability, exec_time);
+		} else {
+			// File doesn't exist
+			fprintf(stderr, "failed to generate CSV file.\n");
+		}
+	}
+	fclose(dataFile);
 
-    // Check if CSV file was successfully generated
-    if (access("DataRand.csv", F_OK) != -1) {
-        // File exists
-        double exec_time = get_execution_time("DataRand.csv", support, param1, param2, &items);
-        fprintf(dataFile, "%.2f %f\n", probability, exec_time);
-    } else {
-        // File doesn't exist
-        fprintf(stderr, "failed to generate CSV file.\n");
-    }
-}
-    fclose(dataFile);
-
-    FILE *gnuplotPipe = popen("gnuplot -persist", "w");
-    if (gnuplotPipe) {
-        fprintf(gnuplotPipe, "Test\n");
-        fprintf(gnuplotPipe, "set xlabel 'Probablité'\n");
-        fprintf(gnuplotPipe, "set ylabel 'Temps d'execution (secondes)'\n");
-        fprintf(gnuplotPipe, "plot 'execution_times.dat' with linespoints title 'Execution Time'\n");
-        fprintf(gnuplotPipe, "pause -1\n");
-        fprintf(gnuplotPipe, "exit\n");
-        pclose(gnuplotPipe);
-    } else {
-        fprintf(stderr, "Error executing gnuplot.\n");
-        exit(1);
-    }
+	FILE *gnuplotPipe = popen("gnuplot -persist", "w");
+	if (gnuplotPipe) {
+		fprintf(gnuplotPipe, "Test\n");
+		fprintf(gnuplotPipe, "set xlabel 'Probablité'\n");
+		fprintf(gnuplotPipe, "set ylabel 'Temps execution (secondes)'\n");
+		fprintf(gnuplotPipe, "plot 'execution_times.dat' with linespoints title 'Execution Time'\n");
+		fprintf(gnuplotPipe, "pause -1\n");
+		fprintf(gnuplotPipe, "exit\n");
+		pclose(gnuplotPipe);
+	} else {
+		fprintf(stderr, "Error executing gnuplot.\n");
+		exit(1);
+	}
 }
