@@ -30,9 +30,9 @@ $- Enter the file's name :
 //choisissez le nom du fichier .csv à exécuter
 $- Enter your support :
 //choisissez le support
-$- Enter the number of the column that contains the ids of the items :
+$- In your file, which column do the items' ids exist in ? :
 //indiquez à l'algorithme la colonne correspondant aux articles dans le fichier csv
-$- Enter the number of the column that contains the ids of the baskets :
+$- In your file, which column do the transactions' ids exist in ? :
 //indiquez à l'algorithme la colonne correspondant aux transactions dans le fichier csv
 $- Choose one of the following methods : (
 //sélectionnez une méthode d'exécution de l'algorithme, soit 1 pour la méthode standard avec lecture du fichier à chaque passage, soit 2 où l'algorithme lit le fichier une seule fois (cette méthode a été ajoutée pour des raisons expérimentales)
@@ -40,10 +40,10 @@ $- Choose one of the following methods : (
 ### Tests
 Les tests généreront des courbes expérimentales sur des données artificielles préalablement générées. Ils fourniront les résultats en termes de temps de calcul et de mémoire, en faisant varier les paramètres pertinents tels que :
 
-- La probabilité d'apparition d'un article
-- Le support
-- Le nombre d'articles
-- Le nombre de transactions
+- 1 La probabilité d'apparition d'un article
+- 2 Le nombre de transactions
+- 3 Le nombre d'items
+- 4 Le support
 
 Lors de l'exécution de ces tests, le programme vous demandera de choisir quels paramètres faire varier (respectivement 1, 2, 3 ou 4).
 
