@@ -9,7 +9,7 @@ Le projet "STL" vise à développer des algorithmes en langage C permettant d'ex
 - Lea El Abboud
 - Esma Hocini
 
-## Installation 
+## Lancement du projet 
 Pour installer le projet, suivez ces étapes :
 ```
  $ cd main_project/
