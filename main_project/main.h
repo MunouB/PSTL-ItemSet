@@ -84,6 +84,11 @@ baskets * generate_baskets_randomly(int,int,double);
 void generate_csv(int,int,double);
 
 
-void run_experiment();
+void run_experiment(int);
+void run_experiment_probability();
+void run_experiment_transaction();
+void run_experiment_items();
+void run_experiment_support();
+
 
 #endif

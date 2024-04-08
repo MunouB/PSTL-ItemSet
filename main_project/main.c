@@ -7,7 +7,6 @@ int main(int argc, char const *argv[]){
 	// double x = get_execution_time("ratings.csv",100,2,1,&size,1);
 	// printf("%lf\n",x);
 	// srand(time(NULL));
-	run_experiment();
 		// generate_csv(20,50,i);
 		// double x = get_execution_time("ratings.csv",150,2,1,&size);
 		// printf("%lf\n",x);
@@ -20,7 +19,7 @@ int main(int argc, char const *argv[]){
 	// baskets * bs = generate_baskets_randomly(10,100,0.5);
 	// display_baskets(bs,100);
 	// generate_csv(10,100,0.2);
-	// runner();
+	runner();
 	// int x;
 	// for(int i = 0 ; i < 10 ; i++){
 	// 	x = generate_0_or_1(0.2);

@@ -77,35 +77,43 @@ double get_execution_time(char *f, int support, int item_id_column, int basket_i
 	return time_spent;
 }
 
+void run_experiment(int varchoice){
+	if(varchoice == 1){
+		run_experiment_probability();
+	}
+	else if(varchoice == 2){
+		run_experiment_transaction();
+	}
+	else if(varchoice == 3){
+		run_experiment_items();
+	}
+	else if(varchoice == 4){
+		run_experiment_support();
+	}
+}
 
-
-void run_experiment() {
+void run_experiment_probability(){
 	srand(time(NULL));
 	// les params fixes
 	int nb_basket = 50;
 	int nb_items = 200;
-	double support = 80;
+	int support = 80;
 	int param1 = 1; // colonne id
 	int param2 = 2; // colonne items
-
-	printf("Je pense pas\n");
-
 
 	FILE *dataFile = fopen("execution_times.dat", "w");
 	if (dataFile == NULL) {
 		fprintf(stderr, "Error opening file.\n");
 		exit(1);
 	}
-	printf("Je suis l)à\n");
 
-	for (double probability = 0.1; probability <= 0.9; probability += 0.1) {
+	for (double probability = 0.1; probability <= 0.9; probability += 0.02) {
 		int items = 0;
 		generate_csv(nb_basket, nb_items, probability);
 		// Check if CSV file was successfully generated
 		if (access("DataRand.csv", F_OK) != -1) {
 			// File exists
 			double exec_time = get_execution_time("DataRand.csv", support, param1, param2, &items);
-			printf("EX time is done and now it's a new life : %f\n",exec_time);
 			fprintf(dataFile, "%.2f %f\n", probability, exec_time);
 		} else {
 			// File doesn't exist
@@ -118,6 +126,141 @@ void run_experiment() {
 	if (gnuplotPipe) {
 		fprintf(gnuplotPipe, "Test\n");
 		fprintf(gnuplotPipe, "set xlabel 'Probablité'\n");
+		fprintf(gnuplotPipe, "set ylabel 'Temps execution (secondes)'\n");
+		fprintf(gnuplotPipe, "plot 'execution_times.dat' with linespoints title 'Execution Time'\n");
+		fprintf(gnuplotPipe, "pause -1\n");
+		fprintf(gnuplotPipe, "exit\n");
+		pclose(gnuplotPipe);
+	} else {
+		fprintf(stderr, "Error executing gnuplot.\n");
+		exit(1);
+	}
+}
+
+void run_experiment_transaction(){
+	srand(time(NULL));
+	// les params fixes
+	int probability = 0.9;
+	int nb_items = 200;
+	int support = 80;
+	int param1 = 1; // colonne id
+	int param2 = 2; // colonne items
+
+	FILE *dataFile = fopen("execution_times.dat", "w");
+	if (dataFile == NULL) {
+		fprintf(stderr, "Error opening file.\n");
+		exit(1);
+	}
+
+	for (int nb_basket = 1; nb_basket <= 200; nb_basket += 1) {
+		int items = 0;
+		generate_csv(nb_basket, nb_items, probability);
+		// Check if CSV file was successfully generated
+		if (access("DataRand.csv", F_OK) != -1) {
+			// File exists
+			double exec_time = get_execution_time("DataRand.csv", support, param1, param2, &items);
+			fprintf(dataFile, "%d %f\n", nb_basket, exec_time);
+		} else {
+			// File doesn't exist
+			fprintf(stderr, "failed to generate CSV file.\n");
+		}
+	}
+	fclose(dataFile);
+
+	FILE *gnuplotPipe = popen("gnuplot -persist", "w");
+	if (gnuplotPipe) {
+		fprintf(gnuplotPipe, "Test\n");
+		fprintf(gnuplotPipe, "set xlabel 'Nb de transactions'\n");
+		fprintf(gnuplotPipe, "set ylabel 'Temps execution (secondes)'\n");
+		fprintf(gnuplotPipe, "plot 'execution_times.dat' with linespoints title 'Execution Time'\n");
+		fprintf(gnuplotPipe, "pause -1\n");
+		fprintf(gnuplotPipe, "exit\n");
+		pclose(gnuplotPipe);
+	} else {
+		fprintf(stderr, "Error executing gnuplot.\n");
+		exit(1);
+	}
+}
+
+void run_experiment_items(){
+	srand(time(NULL));
+	// les params fixes
+	int probability = 0.9;
+	int nb_basket = 50;
+	int support = 80;
+	int param1 = 1; // colonne id
+	int param2 = 2; // colonne items
+
+	FILE *dataFile = fopen("execution_times.dat", "w");
+	if (dataFile == NULL) {
+		fprintf(stderr, "Error opening file.\n");
+		exit(1);
+	}
+
+	for (int nb_items = 1; nb_items <= 500; nb_items += 1) {
+		int items = 0;
+		generate_csv(nb_basket, nb_items, probability);
+		// Check if CSV file was successfully generated
+		if (access("DataRand.csv", F_OK) != -1) {
+			// File exists
+			double exec_time = get_execution_time("DataRand.csv", support, param1, param2, &items);
+			fprintf(dataFile, "%d %f\n", nb_items, exec_time);
+		} else {
+			// File doesn't exist
+			fprintf(stderr, "failed to generate CSV file.\n");
+		}
+	}
+	fclose(dataFile);
+
+	FILE *gnuplotPipe = popen("gnuplot -persist", "w");
+	if (gnuplotPipe) {
+		fprintf(gnuplotPipe, "Test\n");
+		fprintf(gnuplotPipe, "set xlabel 'Nb de items'\n");
+		fprintf(gnuplotPipe, "set ylabel 'Temps execution (secondes)'\n");
+		fprintf(gnuplotPipe, "plot 'execution_times.dat' with linespoints title 'Execution Time'\n");
+		fprintf(gnuplotPipe, "pause -1\n");
+		fprintf(gnuplotPipe, "exit\n");
+		pclose(gnuplotPipe);
+	} else {
+		fprintf(stderr, "Error executing gnuplot.\n");
+		exit(1);
+	}
+}
+
+void run_experiment_support(){
+	srand(time(NULL));
+	// les params fixes
+	int probability = 0.9;
+	int nb_basket = 50;
+	int nb_items = 200;
+	int param1 = 1; // colonne id
+	int param2 = 2; // colonne items
+
+	FILE *dataFile = fopen("execution_times.dat", "w");
+	if (dataFile == NULL) {
+		fprintf(stderr, "Error opening file.\n");
+		exit(1);
+	}
+
+	for (int support = 1; support <= 100; support += 1) {
+		int items = 0;
+		generate_csv(nb_basket, nb_items, probability);
+		// Check if CSV file was successfully generated
+		if (access("DataRand.csv", F_OK) != -1) {
+			// File exists
+			double exec_time = get_execution_time("DataRand.csv", support, param1, param2, &items);
+			fprintf(dataFile, "%d %f\n", support, exec_time);
+		} else {
+			// File doesn't exist
+			fprintf(stderr, "failed to generate CSV file.\n");
+		}
+	}
+	fclose(dataFile);
+
+	FILE *gnuplotPipe = popen("gnuplot -persist", "w");
+	if (gnuplotPipe) {
+		fprintf(gnuplotPipe, "Test\n");
+		fprintf(gnuplotPipe, "set xlabel 'Support'\n");
 		fprintf(gnuplotPipe, "set ylabel 'Temps execution (secondes)'\n");
 		fprintf(gnuplotPipe, "plot 'execution_times.dat' with linespoints title 'Execution Time'\n");
 		fprintf(gnuplotPipe, "pause -1\n");

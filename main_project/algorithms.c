@@ -1,36 +1,77 @@
 #include "main.h"
 
 void runner(){
-	int size = 0;
-	char filename[50];
-	printf("Enter the file's name : ");
-	scanf("%49s",filename);
-	int support;
-	printf("\nEnter your support : ");
-	scanf("%d",&support);
-	int item_id_column;
-	printf("\nEnter the number of the column that contains the ids of the items : ");
-	scanf("%d",&item_id_column);
-	int basket_id_column;
-	printf("\nEnter the number of the column that contains the ids of the baskets : ");
-	scanf("%d",&basket_id_column);
 	int choice;
 	do{
 		printf("\nChoose one of the following methods : \n");
-		printf("1 - Read the file every time a new Lk is constructed.\n");
-		printf("2 - Store the data of the baskets then read the stored data.\n");
+		printf("1 - Execute an algorithm and view results of some existing file.\n");
+		printf("2 - Execute some tests on the execution time of the program.\n");
 		printf("Your choice : ");
 		scanf("%d",&choice);
 		printf("\n");
 	}while(choice != 1 && choice != 2);
-	hash_table * t = apriori(filename,support,item_id_column,basket_id_column,&size,choice);
-}
-
-hash_table * apriori(char * f,int support,int item_id_column,int basket_id_column,int *size,int choice){
+	
 	if(choice == 1){
-		return apriori_algorithm_1(f,support,item_id_column,basket_id_column,size);
+		int size = 0;
+		char filename[50];
+		printf("Enter the file's name : ");
+		scanf("%49s",filename);
+		int support;
+		printf("\nEnter your support : ");
+		scanf("%d",&support);
+		int item_id_column;
+		printf("\nIn your file, which column do the items' ids exist in ? ");
+		scanf("%d",&item_id_column);
+		int basket_id_column;
+		printf("\nIn your file, which column do the transactions' ids exist in ? ");
+		scanf("%d",&basket_id_column);
+		int algochoice;
+		do{
+			printf("\nChoose one of the following methods : \n");
+			printf("1 - Read the file every time a new Lk is constructed.\n");
+			printf("2 - Store the data of the baskets then read the stored data.\n");
+			printf("Your choice : ");
+			scanf("%d",&algochoice);
+			printf("\n");
+		}while(algochoice != 1 && algochoice != 2);
+		hash_table * t = apriori(filename,support,item_id_column,basket_id_column,&size,algochoice);
+		display_hash_table(t);
+		free_hash_table(t);
 	}
 	else if(choice == 2){
+		int testchoice;
+		do{
+			printf("\nChoose one of the following tests : \n");
+			printf("1 - Test the execution time.\n");
+			printf("Your choice : ");
+			scanf("%d",&testchoice);
+			printf("\n");
+		}
+		while(testchoice != 1);
+
+		if(testchoice == 1){
+			int varchoice;
+			do{
+				printf("\nChoose one of the following variations : \n");
+				printf("\nTest the execution time depending on the variation of : \n");
+				printf("1 - The probability of the existance of an element in a transaction.\n");
+				printf("2 - The total number of transactions.\n");
+				printf("3 - The total number of items.\n");
+				printf("4 - The support.\n");
+				printf("Your choice : ");
+				scanf("%d",&varchoice);
+				printf("\n");
+			}while(varchoice != 1 && varchoice != 2 && varchoice != 3 && varchoice != 4);
+			run_experiment(varchoice);
+		}
+	}
+}
+
+hash_table * apriori(char * f,int support,int item_id_column,int basket_id_column,int *size,int algochoice){
+	if(algochoice == 1){
+		return apriori_algorithm_1(f,support,item_id_column,basket_id_column,size);
+	}
+	else if(algochoice == 2){
 		return apriori_algorithm_2(f,support,item_id_column,basket_id_column,size);
 	}
 	return NULL;
