@@ -1,6 +1,18 @@
 
 # Projet STL (2023-2024) : Extraction de Motifs Graduels Fermés Fréquents sous Contrainte de Temporalité 
 
+## Table des Matières
+
+  - [Description](#description)
+  - [Contributeurs](#contributeurs)
+  - [Installation des dépendances](#installation-des-dépendances)
+    - [Gnuplot : Pour l'affichage des courbes graphiques](#gnuplot--pour-laffichage-des-courbes-graphiques)
+  - [Lancement du projet](#lancement-du-projet)
+  - [Exécution](#exécution)
+    - [Algorithme Apriori](#algorithme-apriori)
+
+    - [Tests](#tests)
+
 ## Description 
 Le projet "STL" vise à développer des algorithmes en langage C permettant d'extraire efficacement des motifs graduels fermés fréquents à partir de données commerciales. Ces motifs sont cruciaux pour améliorer divers aspects tels que la gestion des stocks, l'agencement des produits en rayon et les recommandations en ligne.
 
@@ -9,7 +21,14 @@ Le projet "STL" vise à développer des algorithmes en langage C permettant d'ex
 - Lea El Abboud
 - Esma Hocini
 
-## Installation 
+## Installation des dépendances
+### Gnuplot : Pour l'affichage des courbes graphiques
+
+- **Windows**: Téléchargez et installez Gnuplot à partir du [site officiel](http://www.gnuplot.info/download.html).
+- **Linux**: Utilisez votre gestionnaire de paquets, par exemple `sudo apt-get install gnuplot` pour Debian/Ubuntu.
+- **macOS**: Utilisez Homebrew en exécutant `brew install gnuplot`.
+
+## Lancement du projet 
 Pour installer le projet, suivez ces étapes :
 ```
  $ cd main_project/
@@ -18,32 +37,49 @@ Pour installer le projet, suivez ces étapes :
 ```
 
 ## Exécution
-Au lancement du programme, vous serez invité à choisir parmi les options suivantes :
+Au lancement du programme, vous pouvez exécuter différentes fonctionnalités en utilisant des arguments en ligne de commande.
+Le premier argument passé lors de l'exécution du programme (`1` ou `2`) détermine quelle fonctionnalité du programme doit être exécutée :
+- Si le premier argument est `1`, cela indique que l'utilisateur souhaite exécuter l'algorithme Apriori.
+- Si le premier argument est `2`, cela signifie que l'utilisateur souhaite exécuter les tests.
 
-- 1 pour exécuter l'algorithme Apriori
-- 2 pour exécuter les tests
+### Algorithme Apriori
+#### Format du fichier CSV
 
-### Algorithme Apriori 
-Lors de l'exécution de l'algorithme Apriori, suivez ces étapes :
+Le fichier de données est au format CSV (Comma-Separated Values) et comprend deux colonnes :
+
 ```
-$- Enter the file's name :
-//choisissez le nom du fichier .csv à exécuter
-$- Enter your support :
-//choisissez le support
-$- Enter the number of the column that contains the ids of the items :
-//indiquez à l'algorithme la colonne correspondant aux articles dans le fichier csv
-$- Enter the number of the column that contains the ids of the baskets :
-//indiquez à l'algorithme la colonne correspondant aux transactions dans le fichier csv
-$- Choose one of the following methods : (
-//sélectionnez une méthode d'exécution de l'algorithme, soit 1 pour la méthode standard avec lecture du fichier à chaque passage, soit 2 où l'algorithme lit le fichier une seule fois (cette méthode a été ajoutée pour des raisons expérimentales)
+Transaction, Items
+1, 2
+1, 18
+2, 12
+2, 1
+2, 2
+3, 13
+3, 78
 ```
+La première colonne représente les `transactions` et la deuxième colonne représente les `items` associés à chaque transaction.
+
+- Pour exécuter l'algorithme, utilisez : 
+
+```
+./main 1 fichier.csv support algochoice
+```
+- Assurez-vous de remplacer `fichier.csv`, `support`, et `algochoice` par les valeurs appropriées.
+`algochoice` est une option pour choisir la méthode d'exécution de l'algorithme, soit 1 pour la méthode standard avec lecture du fichier à chaque passage, ou bien 2 où l'algorithme lit le fichier une seule fois (cette méthode a été ajoutée pour des raisons expérimentales).
+
+
 ### Tests
-Les tests généreront des courbes expérimentales sur des données artificielles préalablement générées. Ils fourniront les résultats en termes de temps de calcul et de mémoire, en faisant varier les paramètres pertinents tels que :
+Les tests généreront des courbes expérimentales sur des données artificielles préalablement générées. Ils fourniront les résultats en termes de temps de calcul et de mémoire, en faisant varier les paramètres pertinents tels que, pour executer les tests utilisez : 
 
-- La probabilité d'apparition d'un article
-- Le support
-- Le nombre d'articles
-- Le nombre de transactions
+```
+./main 2 varchoice
+```
+
+Assurez-vous de remplacer `varchoice` par la valeur appropriée, telle que:
+
+- 1 La probabilité d'apparition d'un article
+- 2 Le nombre de transactions
+- 3 Le nombre d'items
+- 4 Le support
 
 Lors de l'exécution de ces tests, le programme vous demandera de choisir quels paramètres faire varier (respectivement 1, 2, 3 ou 4).
-
