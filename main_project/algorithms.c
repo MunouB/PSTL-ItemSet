@@ -77,6 +77,15 @@ void run_algorithm(char *filename, int support, int algochoice) {
 
 }
 
+void run_algorithm_tid(char *filename, int support) {
+	printf("Running algorithm with on file: %s, with support of : %d ...\n",
+		   filename, support);
+	int size = 0;
+	hash_table *t = apriori_tid_algorithm(filename, support, 2, 1, &size);
+	display_hash_table(t);
+	free_hash_table(t);
+}
+
 void run_tests(int varchoice) {
    	 printf("Running tests... \n");
      run_experiment(varchoice);
@@ -99,15 +108,24 @@ void runner(int argc, char *argv[]) {
     }
 
     if (choice == 1) {
-        if (argc != 7) {
-            printf("choice: %s 1 filename support algochoice\n", argv[0]);
-            return;
-        }
+        // if (argc != 7) {
+        //     printf("choice: %s 1 filename support algochoice\n", argv[0]);
+        //     return;
+        // }
         char *filename = argv[2];
         int support = atoi(argv[3]);
         int algochoice = atoi(argv[4]);
         run_algorithm(filename, support, algochoice);
-    } else if (choice == 2) {
+    } 
+
+	if (choice == 2) {
+	
+		char *filename = argv[2];
+		int support = atoi(argv[3]);
+		run_algorithm_tid(filename, support);
+	}
+	
+	else if (choice == 3) {
         if (argc != 3) {
             printf("choice: %s 2 varchoice\n", argv[0]);
             return;
@@ -257,4 +275,66 @@ hash_table * apriori_algorithm_2(char * f,int support,int item_id_column,int bas
 		lk = init_hash_table();
 	}
 	return res;
+}
+
+// Function prototype, declare this in main.h as well
+hash_table *apriori_tid_algorithm(char *f, int support, int item_id_column, int basket_id_column, int *size);
+
+// The Apriori TID algorithm
+hash_table *apriori_tid_algorithm(char *f, int support, int item_id_column, int basket_id_column, int *size) {
+    // Initialize data structures 
+    tid_map *map = init_tid_map(10); // Start with an arbitrary initial capacity
+    hash_table *res = construct_l1(f, support, item_id_column, size);
+	printf("270\n");
+	*size = 0;
+    hash_table *lk = construct_l1(f, support, item_id_column, size);
+	printf("272\n");
+	
+    
+    bool end = true;
+    while(end) {
+		*size = 0;
+        end = false;
+        hash_table *ck = construct_ck(lk);
+        
+        // Update TID sets for the current ck
+		baskets *bs = construct_baskets(f, item_id_column, basket_id_column, size);  
+		printf("281\n");
+        update_tid_sets(map, ck, bs);
+        
+        // Generate lk from tidsets
+        hash_table *new_lk = generate_lk_from_tid_map(map, support);
+        printf("289\n");
+		
+        // here we should have a new lk ready for the next iterationnn
+        // if new_lk is empty, end the loop  otherwise update lk and continue
+        if (new_lk->pointers != NULL) {
+    bool foundLargeItemset = false;
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        for (hash_node *current = new_lk->pointers[i]; current != NULL; current = current->next) {
+            if (current->item_set->count >= support) {
+                foundLargeItemset = true;
+                break;
+            }
+        }
+        if (foundLargeItemset) break;
+    }
+    
+    if (!foundLargeItemset) {
+        free_hash_table(new_lk);
+        break;
+    } else {
+        free_hash_table(lk);
+        lk = new_lk;
+        // Keep end as true to continue the loop
+    }
+} else {
+    free_hash_table(new_lk);
+    break; // exit loop
+}
+    }
+    
+    
+    free_tid_map(map);
+    return res;
 }

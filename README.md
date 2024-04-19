@@ -28,12 +28,11 @@ Le projet "STL" vise à développer des algorithmes en langage C permettant d'ex
 - **Linux**: Utilisez votre gestionnaire de paquets, par exemple `sudo apt-get install gnuplot` pour Debian/Ubuntu.
 - **macOS**: Utilisez Homebrew en exécutant `brew install gnuplot`.
 
-## Lancement du projet 
+## Lancement et compilation du projet 
 Pour installer le projet, suivez ces étapes :
 ```
  $ cd main_project/
  $ make
- $ ./main
 ```
 
 ## Exécution
@@ -59,10 +58,16 @@ Transaction, Items
 ```
 La première colonne représente les `transactions` et la deuxième colonne représente les `items` associés à chaque transaction.
 
-- Pour exécuter l'algorithme, utilisez : 
+- Pour exécuter l'algorithme de base, utilisez : 
 
 ```
 ./main 1 fichier.csv support algochoice
+```
+
+- Pour exécuter l'algorithme TID, utilisez : 
+
+```
+./main 2 fichier.csv support 
 ```
 - Assurez-vous de remplacer `fichier.csv`, `support`, et `algochoice` par les valeurs appropriées.
 `algochoice` est une option pour choisir la méthode d'exécution de l'algorithme, soit 1 pour la méthode standard avec lecture du fichier à chaque passage, ou bien 2 où l'algorithme lit le fichier une seule fois (cette méthode a été ajoutée pour des raisons expérimentales).
@@ -72,7 +77,7 @@ La première colonne représente les `transactions` et la deuxième colonne repr
 Les tests généreront des courbes expérimentales sur des données artificielles préalablement générées. Ils fourniront les résultats en termes de temps de calcul et de mémoire, en faisant varier les paramètres pertinents tels que, pour executer les tests utilisez : 
 
 ```
-./main 2 varchoice
+./main 3 varchoice
 ```
 
 Assurez-vous de remplacer `varchoice` par la valeur appropriée, telle que:
