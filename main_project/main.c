@@ -19,7 +19,7 @@ int main(int argc, char const *argv[]){
 	// baskets * bs = generate_baskets_randomly(10,100,0.5);
 	// display_baskets(bs,100);
 	// generate_csv(10,100,0.2);
-	runner();
+	runner(argc, argv);
 	// int x;
 	// for(int i = 0 ; i < 10 ; i++){
 	// 	x = generate_0_or_1(0.2);

@@ -33,10 +33,35 @@ typedef struct {
 	int count; //Number of baskets
 }baskets;
 
+//
+typedef struct {
+    int tid;
+    item_set *itemset;
+} tid_entry;
+
+typedef struct {
+    tid_entry *entries;
+    int count;
+    int capacity;
+} tid_map;
+//
+
 item_set* init_item_set();
 hash_node * init_node();
 hash_table* init_hash_table();
 baskets * init_baskets();
+
+
+
+//
+tid_map *init_tid_map(int initial_capacity);
+void add_to_tid_map(tid_map *map, int tid, item_set *set);
+void free_tid_map(tid_map *map);
+bool all_items_of_tid_in_itemset(tid_map *map, int tid, item_set *set);
+void update_tid_sets(tid_map *map, hash_table *lk, baskets *bs);
+hash_table *generate_lk_from_tid_map(tid_map *map, int support);
+hash_table *apriori_tid_algorithm(char *f, int support, int item_id_column, int basket_id_column, int *size);
+//
 
 unsigned int hash_item_set(item_set*);
 unsigned int hash_item_id(int);

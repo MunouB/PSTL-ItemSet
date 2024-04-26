@@ -1,70 +1,138 @@
 #include "main.h"
 
-void runner(){
-	int choice;
-	do{
-		printf("\nChoose one of the following methods : \n");
-		printf("1 - Execute an algorithm and view results of some existing file.\n");
-		printf("2 - Execute some tests on the execution time of the program.\n");
-		printf("Your choice : ");
-		scanf("%d",&choice);
-		printf("\n");
-	}while(choice != 1 && choice != 2);
+// void runner(){
+// 	int choice;
+// 	do{
+// 		printf("\nChoose one of the following methods : \n");
+// 		printf("1 - Execute an algorithm and view results of some existing file.\n");
+// 		printf("2 - Execute some tests on the execution time of the program.\n");
+// 		printf("Your choice : ");
+// 		scanf("%d",&choice);
+// 		printf("\n");
+// 	}while(choice != 1 && choice != 2);
 	
-	if(choice == 1){
-		int size = 0;
-		char filename[50];
-		printf("Enter the file's name : ");
-		scanf("%49s",filename);
-		int support;
-		printf("\nEnter your support : ");
-		scanf("%d",&support);
-		int item_id_column;
-		printf("\nIn your file, which column do the items' ids exist in ? ");
-		scanf("%d",&item_id_column);
-		int basket_id_column;
-		printf("\nIn your file, which column do the transactions' ids exist in ? ");
-		scanf("%d",&basket_id_column);
-		int algochoice;
-		do{
-			printf("\nChoose one of the following methods : \n");
-			printf("1 - Read the file every time a new Lk is constructed.\n");
-			printf("2 - Store the data of the baskets then read the stored data.\n");
-			printf("Your choice : ");
-			scanf("%d",&algochoice);
-			printf("\n");
-		}while(algochoice != 1 && algochoice != 2);
-		hash_table * t = apriori(filename,support,item_id_column,basket_id_column,&size,algochoice);
-		display_hash_table(t);
-		free_hash_table(t);
-	}
-	else if(choice == 2){
-		int testchoice;
-		do{
-			printf("\nChoose one of the following tests : \n");
-			printf("1 - Test the execution time.\n");
-			printf("Your choice : ");
-			scanf("%d",&testchoice);
-			printf("\n");
-		}
-		while(testchoice != 1);
+// 	if(choice == 1){
+// 		int size = 0;
+// 		char filename[50];
+// 		printf("Enter the file's name : ");
+// 		scanf("%49s",filename);
+// 		int support;
+// 		printf("\nEnter your support : ");
+// 		scanf("%d",&support);
+// 		int item_id_column;
+// 		printf("\nIn your file, which column do the items' ids exist in ? ");
+// 		scanf("%d",&item_id_column);
+// 		int basket_id_column;
+// 		printf("\nIn your file, which column do the transactions' ids exist in ? ");
+// 		scanf("%d",&basket_id_column);
+// 		int algochoice;
+// 		do{
+// 			printf("\nChoose one of the following methods : \n");
+// 			printf("1 - Read the file every time a new Lk is constructed.\n");
+// 			printf("2 - Store the data of the baskets then read the stored data.\n");
+// 			printf("Your choice : ");
+// 			scanf("%d",&algochoice);
+// 			printf("\n");
+// 		}while(algochoice != 1 && algochoice != 2);
+// 		hash_table * t = apriori(filename,support,item_id_column,basket_id_column,&size,algochoice);
+// 		display_hash_table(t);
+// 		free_hash_table(t);
+// 	}
+// 	else if(choice == 2){
+// 		int testchoice;
+// 		do{
+// 			printf("\nChoose one of the following tests : \n");
+// 			printf("1 - Test the execution time.\n");
+// 			printf("Your choice : ");
+// 			scanf("%d",&testchoice);
+// 			printf("\n");
+// 		}
+// 		while(testchoice != 1);
 
-		if(testchoice == 1){
-			int varchoice;
-			do{
-				printf("\nChoose one of the following variations : \n");
-				printf("\nTest the execution time depending on the variation of : \n");
-				printf("1 - The probability of the existance of an element in a transaction.\n");
-				printf("2 - The total number of transactions.\n");
-				printf("3 - The total number of items.\n");
-				printf("4 - The support.\n");
-				printf("Your choice : ");
-				scanf("%d",&varchoice);
-				printf("\n");
-			}while(varchoice != 1 && varchoice != 2 && varchoice != 3 && varchoice != 4);
-			run_experiment(varchoice);
-		}
+// 		if(testchoice == 1){
+// 			int varchoice;
+// 			do{
+// 				printf("\nChoose one of the following variations : \n");
+// 				printf("\nTest the execution time depending on the variation of : \n");
+// 				printf("1 - The probability of the existance of an element in a transaction.\n");
+// 				printf("2 - The total number of transactions.\n");
+// 				printf("3 - The total number of items.\n");
+// 				printf("4 - The support.\n");
+// 				printf("Your choice : ");
+// 				scanf("%d",&varchoice);
+// 				printf("\n");
+// 			}while(varchoice != 1 && varchoice != 2 && varchoice != 3 && varchoice != 4);
+// 			run_experiment(varchoice);
+// 		}
+// 	}
+// }
+
+void run_algorithm(char *filename, int support, int algochoice) {
+	    printf("Running algorithm with on file: %s, with support of : %d ...\n",
+           filename, support);
+    int size = 0;
+     hash_table * t = apriori(filename, support, 2, 1, &size, algochoice);
+     display_hash_table(t);
+     free_hash_table(t);
+
+}
+
+void run_algorithm_tid(char *filename, int support) {
+	printf("Running algorithm with on file: %s, with support of : %d ...\n",
+		   filename, support);
+	int size = 0;
+	hash_table *t = apriori_tid_algorithm(filename, support, 2, 1, &size);
+	display_hash_table(t);
+	free_hash_table(t);
+}
+
+void run_tests(int varchoice) {
+   	 printf("Running tests... \n");
+     run_experiment(varchoice);
+    
+}
+
+void runner(int argc, char *argv[]) {
+    if (argc < 2) {
+        printf("Usage: %s choice [args...]\n", argv[0]);
+        printf("  choice: 1 - Execute an algorithm\n");
+        printf("          2 - Execute tests on execution time\n");
+        return;
+    }
+
+    int choice = atoi(argv[1]);
+
+    if (choice != 1 && choice != 2) {
+        printf("Invalid choice.\n");
+        return;
+    }
+
+    if (choice == 1) {
+        // if (argc != 7) {
+        //     printf("choice: %s 1 filename support algochoice\n", argv[0]);
+        //     return;
+        // }
+        char *filename = argv[2];
+        int support = atoi(argv[3]);
+        int algochoice = atoi(argv[4]);
+        run_algorithm(filename, support, algochoice);
+    } 
+
+	if (choice == 2) {
+	
+		char *filename = argv[2];
+		int support = atoi(argv[3]);
+		run_algorithm_tid(filename, support);
 	}
+	
+	else if (choice == 3) {
+        if (argc != 3) {
+            printf("choice: %s 2 varchoice\n", argv[0]);
+            return;
+        }
+        int varchoice = atoi(argv[2]);
+        run_tests(varchoice);
+    }
 }
 
 hash_table * apriori(char * f,int support,int item_id_column,int basket_id_column,int *size,int algochoice){
@@ -207,4 +275,66 @@ hash_table * apriori_algorithm_2(char * f,int support,int item_id_column,int bas
 		lk = init_hash_table();
 	}
 	return res;
+}
+
+// Function prototype, declare this in main.h as well
+hash_table *apriori_tid_algorithm(char *f, int support, int item_id_column, int basket_id_column, int *size);
+
+// The Apriori TID algorithm
+hash_table *apriori_tid_algorithm(char *f, int support, int item_id_column, int basket_id_column, int *size) {
+    // Initialize data structures 
+    tid_map *map = init_tid_map(10); // Start with an arbitrary initial capacity
+    hash_table *res = construct_l1(f, support, item_id_column, size);
+	printf("270\n");
+	*size = 0;
+    hash_table *lk = construct_l1(f, support, item_id_column, size);
+	printf("272\n");
+	
+    
+    bool end = true;
+    while(end) {
+		*size = 0;
+        end = false;
+        hash_table *ck = construct_ck(lk);
+        
+        // Update TID sets for the current ck
+		baskets *bs = construct_baskets(f, item_id_column, basket_id_column, size);  
+		printf("281\n");
+        update_tid_sets(map, ck, bs);
+        
+        // Generate lk from tidsets
+        hash_table *new_lk = generate_lk_from_tid_map(map, support);
+        printf("289\n");
+		
+        // here we should have a new lk ready for the next iterationnn
+        // if new_lk is empty, end the loop  otherwise update lk and continue
+        if (new_lk->pointers != NULL) {
+    bool foundLargeItemset = false;
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        for (hash_node *current = new_lk->pointers[i]; current != NULL; current = current->next) {
+            if (current->item_set->count >= support) {
+                foundLargeItemset = true;
+                break;
+            }
+        }
+        if (foundLargeItemset) break;
+    }
+    
+    if (!foundLargeItemset) {
+        free_hash_table(new_lk);
+        break;
+    } else {
+        free_hash_table(lk);
+        lk = new_lk;
+        // Keep end as true to continue the loop
+    }
+} else {
+    free_hash_table(new_lk);
+    break; // exit loop
+}
+    }
+    
+    
+    free_tid_map(map);
+    return res;
 }
