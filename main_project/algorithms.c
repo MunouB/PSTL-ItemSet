@@ -102,7 +102,7 @@ void runner(int argc, char *argv[]) {
 
     int choice = atoi(argv[1]);
 
-    if (choice != 1 && choice != 2) {
+    if (choice != 1 && choice != 2 && choice != 3) {
         printf("Invalid choice.\n");
         return;
     }

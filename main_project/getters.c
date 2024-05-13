@@ -108,17 +108,21 @@ void run_experiment_probability(){
 	}
 
 	for (double probability = 0.1; probability <= 0.9; probability += 0.02) {
-		int items = 0;
-		generate_csv(nb_basket, nb_items, probability);
-		// Check if CSV file was successfully generated
-		if (access("DataRand.csv", F_OK) != -1) {
-			// File exists
-			double exec_time = get_execution_time("DataRand.csv", support, param1, param2, &items);
-			fprintf(dataFile, "%.2f %f\n", probability, exec_time);
-		} else {
-			// File doesn't exist
-			fprintf(stderr, "failed to generate CSV file.\n");
+		double total_exec_time = 0;
+		for(int i = 0 ; i < 1 ; i++){
+			int items = 0;
+			generate_csv(nb_basket, nb_items, probability);
+			// Check if CSV file was successfully generated
+			if (access("DataRand.csv", F_OK) != -1) {
+				// File exists
+				total_exec_time += get_execution_time("DataRand.csv", support, param1, param2, &items);
+			} else {
+				// File doesn't exist
+				fprintf(stderr, "failed to generate CSV file.\n");
+			}
 		}
+		double exec_time = total_exec_time / 1.0;
+		fprintf(dataFile, "%.2f %f\n", probability, exec_time);
 	}
 	fclose(dataFile);
 
@@ -153,17 +157,21 @@ void run_experiment_transaction(){
 	}
 
 	for (int nb_basket = 1; nb_basket <= 200; nb_basket += 1) {
-		int items = 0;
-		generate_csv(nb_basket, nb_items, probability);
-		// Check if CSV file was successfully generated
-		if (access("DataRand.csv", F_OK) != -1) {
-			// File exists
-			double exec_time = get_execution_time("DataRand.csv", support, param1, param2, &items);
-			fprintf(dataFile, "%d %f\n", nb_basket, exec_time);
-		} else {
-			// File doesn't exist
-			fprintf(stderr, "failed to generate CSV file.\n");
+		double total_exec_time = 0;
+		for(int i = 0 ; i < 100 ; i++){
+			int items = 0;
+			generate_csv(nb_basket, nb_items, probability);
+			// Check if CSV file was successfully generated
+			if (access("DataRand.csv", F_OK) != -1) {
+				// File exists
+				total_exec_time += get_execution_time("DataRand.csv", support, param1, param2, &items);
+			} else {
+				// File doesn't exist
+				fprintf(stderr, "failed to generate CSV file.\n");
+			}
 		}
+		double exec_time = total_exec_time / 100.0;
+		fprintf(dataFile, "%d %f\n", nb_basket, exec_time);
 	}
 	fclose(dataFile);
 
@@ -197,18 +205,22 @@ void run_experiment_items(){
 		exit(1);
 	}
 
-	for (int nb_items = 1; nb_items <= 500; nb_items += 1) {
-		int items = 0;
-		generate_csv(nb_basket, nb_items, probability);
-		// Check if CSV file was successfully generated
-		if (access("DataRand.csv", F_OK) != -1) {
-			// File exists
-			double exec_time = get_execution_time("DataRand.csv", support, param1, param2, &items);
-			fprintf(dataFile, "%d %f\n", nb_items, exec_time);
-		} else {
-			// File doesn't exist
-			fprintf(stderr, "failed to generate CSV file.\n");
+	for (int nb_items = 1; nb_items <= 400; nb_items += 1) {
+		double total_exec_time = 0;
+		for(int i = 0 ; i < 100 ; i++){
+			int items = 0;
+			generate_csv(nb_basket, nb_items, probability);
+			// Check if CSV file was successfully generated
+			if (access("DataRand.csv", F_OK) != -1) {
+				// File exists
+				total_exec_time += get_execution_time("DataRand.csv", support, param1, param2, &items);
+			} else {
+				// File doesn't exist
+				fprintf(stderr, "failed to generate CSV file.\n");
+			}
 		}
+		double exec_time = total_exec_time / 100.0;
+		fprintf(dataFile, "%d %f\n", nb_items, exec_time);
 	}
 	fclose(dataFile);
 
@@ -243,17 +255,21 @@ void run_experiment_support(){
 	}
 
 	for (int support = 1; support <= 100; support += 1) {
-		int items = 0;
-		generate_csv(nb_basket, nb_items, probability);
-		// Check if CSV file was successfully generated
-		if (access("DataRand.csv", F_OK) != -1) {
-			// File exists
-			double exec_time = get_execution_time("DataRand.csv", support, param1, param2, &items);
-			fprintf(dataFile, "%d %f\n", support, exec_time);
-		} else {
-			// File doesn't exist
-			fprintf(stderr, "failed to generate CSV file.\n");
+		double total_exec_time = 0;
+		for(int i = 0 ; i < 1 ; i++){
+			int items = 0;
+			generate_csv(nb_basket, nb_items, probability);
+			// Check if CSV file was successfully generated
+			if (access("DataRand.csv", F_OK) != -1) {
+				// File exists
+				total_exec_time += get_execution_time("DataRand.csv", support, param1, param2, &items);
+			} else {
+				// File doesn't exist
+				fprintf(stderr, "failed to generate CSV file.\n");
+			}
 		}
+		double exec_time = total_exec_time / 1.0;
+		fprintf(dataFile, "%d %f\n", support, exec_time);
 	}
 	fclose(dataFile);
 
