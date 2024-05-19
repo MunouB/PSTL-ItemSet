@@ -95,9 +95,9 @@ void run_experiment(int varchoice){
 void run_experiment_probability(){
 	srand(time(NULL));
 	// les params fixes
-	int nb_basket = 50;
-	int nb_items = 200;
-	int support = 80;
+	int nb_basket = 60;
+	int nb_items = 100;
+	int support = 30;
 	int param1 = 1; // colonne id
 	int param2 = 2; // colonne items
 
@@ -144,9 +144,9 @@ void run_experiment_probability(){
 void run_experiment_transaction(){
 	srand(time(NULL));
 	// les params fixes
-	int probability = 0.9;
-	int nb_items = 200;
-	int support = 80;
+	double probability = 0.7;
+	int nb_items = 100;
+	int support = 20;
 	int param1 = 1; // colonne id
 	int param2 = 2; // colonne items
 
@@ -156,9 +156,9 @@ void run_experiment_transaction(){
 		exit(1);
 	}
 
-	for (int nb_basket = 1; nb_basket <= 200; nb_basket += 1) {
+	for (int nb_basket = 30; nb_basket <= 60; nb_basket += 1) {
 		double total_exec_time = 0;
-		for(int i = 0 ; i < 100 ; i++){
+		for(int i = 0 ; i < 1 ; i++){
 			int items = 0;
 			generate_csv(nb_basket, nb_items, probability);
 			// Check if CSV file was successfully generated
@@ -170,7 +170,7 @@ void run_experiment_transaction(){
 				fprintf(stderr, "failed to generate CSV file.\n");
 			}
 		}
-		double exec_time = total_exec_time / 100.0;
+		double exec_time = total_exec_time / 1.0;
 		fprintf(dataFile, "%d %f\n", nb_basket, exec_time);
 	}
 	fclose(dataFile);
@@ -193,9 +193,9 @@ void run_experiment_transaction(){
 void run_experiment_items(){
 	srand(time(NULL));
 	// les params fixes
-	int probability = 0.9;
-	int nb_basket = 50;
-	int support = 80;
+	double probability = 0.5;
+	int nb_basket = 60;
+	int support = 20;
 	int param1 = 1; // colonne id
 	int param2 = 2; // colonne items
 
@@ -205,9 +205,9 @@ void run_experiment_items(){
 		exit(1);
 	}
 
-	for (int nb_items = 1; nb_items <= 400; nb_items += 1) {
+	for (int nb_items = 50; nb_items <= 100; nb_items += 1) {
 		double total_exec_time = 0;
-		for(int i = 0 ; i < 100 ; i++){
+		for(int i = 0 ; i < 1 ; i++){
 			int items = 0;
 			generate_csv(nb_basket, nb_items, probability);
 			// Check if CSV file was successfully generated
@@ -219,7 +219,7 @@ void run_experiment_items(){
 				fprintf(stderr, "failed to generate CSV file.\n");
 			}
 		}
-		double exec_time = total_exec_time / 100.0;
+		double exec_time = total_exec_time / 1.0;
 		fprintf(dataFile, "%d %f\n", nb_items, exec_time);
 	}
 	fclose(dataFile);
@@ -242,9 +242,9 @@ void run_experiment_items(){
 void run_experiment_support(){
 	srand(time(NULL));
 	// les params fixes
-	int probability = 0.9;
-	int nb_basket = 50;
-	int nb_items = 200;
+	double probability = 0.15;
+	int nb_basket = 60;
+	int nb_items = 60;
 	int param1 = 1; // colonne id
 	int param2 = 2; // colonne items
 
@@ -254,7 +254,7 @@ void run_experiment_support(){
 		exit(1);
 	}
 
-	for (int support = 1; support <= 100; support += 1) {
+	for (int support = 1; support <= 40; support += 1) {
 		double total_exec_time = 0;
 		for(int i = 0 ; i < 1 ; i++){
 			int items = 0;
